@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "starve_no_more",
+	"version": "${version}",
+	"name": "Starve No More!",
+	"description": "A vanilla+ mod with the goal of boosting the spawnrate of passive mobs!",
+	"authors": [
+		"DaMushKen"
+	],
+	"license": "MIT",
+	"icon": "assets/starve_no_more/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.damushken.starve_no_more.StarveNoMore"
+		],
+		"client": [
+			"net.damushken.starve_no_more.StarveNoMoreClient"
+		],
+		"fabric-datagen": [
+			"net.damushken.starve_no_more.StarveNoMoreDataGenerator"
+		]
+	},
+	"mixins": [
+		"starve_no_more.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	}
+}
