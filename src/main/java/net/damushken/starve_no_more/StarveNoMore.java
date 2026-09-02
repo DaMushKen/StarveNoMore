@@ -1,7 +1,9 @@
 package net.damushken.starve_no_more;
 
+import net.damushken.starve_no_more.mixin.SpawnGroupAccessor;
 import net.fabricmc.api.ModInitializer;
 
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
 
 import org.slf4j.Logger;
@@ -20,6 +22,14 @@ public class StarveNoMore implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+
+		((SpawnGroupAccessor)(Object) SpawnGroup.CREATURE).setCapacity(30); //default = 10
+
+		((SpawnGroupAccessor)(Object) SpawnGroup.AXOLOTLS).setCapacity(10); //default = 5
+		((SpawnGroupAccessor)(Object) SpawnGroup.UNDERGROUND_WATER_CREATURE).setCapacity(15); //default = 5
+		((SpawnGroupAccessor)(Object) SpawnGroup.WATER_CREATURE).setCapacity(15); //default = 5
+		((SpawnGroupAccessor)(Object) SpawnGroup.WATER_AMBIENT).setCapacity(30); //default = 20
+
 	}
 
 	public static Identifier id(String path) {

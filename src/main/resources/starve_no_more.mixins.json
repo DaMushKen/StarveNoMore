@@ -3,7 +3,8 @@
 	"package": "net.damushken.starve_no_more.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"SpawnGroupAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
