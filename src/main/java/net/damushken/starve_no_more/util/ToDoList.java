@@ -8,12 +8,12 @@ public class ToDoList {
     HARD -       ○○○
 
 
-    TODO - RAISE PASSIVE MOB CAP FROM 10 TO 20 / 30                              ○
+         - RAISE PASSIVE MOB CAP FROM 10 TO 20 / 30                              ○
     TODO - GAME CHECKS TO SPAWN A PASSIVE MOB EVERY 10 SECONDS INSTEAD OF 20     ○○
-    TODO - PLAYER BRED PASSIVE MOBS DON'T COUNT TOWARDS LIMIT                    ○○○
     TODO - PLAYER PET PASSIVE MOBS DON'T COUNT TOWARDS LIMIT                     ○○○
     TODO - USING BONE MEAL ON GRASS BLOCKS HAS CHANCE TO SPAWN BABY PASSIVE MOB  ○○○
     TODO - PASSIVE MOB SPAWNING DOUBLED DURING 3 FIRST MINUTES AFTER DAWN        ○○○
+    TODO - BOOST PASSIVE MOB SPAWN ON CHUNK GENERATION                          ○○○
     TODO - CONFIG FILE / GAMERULES                                               ○○
      */
 

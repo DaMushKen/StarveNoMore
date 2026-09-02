@@ -23,12 +23,13 @@ public class StarveNoMore implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		((SpawnGroupAccessor)(Object) SpawnGroup.CREATURE).setCapacity(30); //default = 10
+		((SpawnGroupAccessor)(Object) SpawnGroup.CREATURE).setCapacity(35); //default = 10
 
 		((SpawnGroupAccessor)(Object) SpawnGroup.AXOLOTLS).setCapacity(10); //default = 5
-		((SpawnGroupAccessor)(Object) SpawnGroup.UNDERGROUND_WATER_CREATURE).setCapacity(15); //default = 5
 		((SpawnGroupAccessor)(Object) SpawnGroup.WATER_CREATURE).setCapacity(15); //default = 5
 		((SpawnGroupAccessor)(Object) SpawnGroup.WATER_AMBIENT).setCapacity(30); //default = 20
+
+		//LOGGER.info("SpawnGroup.CREATURE capacity is now: {}", SpawnGroup.CREATURE.getCapacity());
 
 	}
 
