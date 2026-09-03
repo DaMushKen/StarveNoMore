@@ -46,9 +46,6 @@ public class SpawnBoost {
                         biomeModificationContext -> {
                             var spawnSettings = biomeModificationContext.getSpawnSettings();
 
-                            //Raise the chance a spawn attempt happens at all per chunk
-                            spawnSettings.setCreatureSpawnProbability(0.3f); // default  ~0.1-0.2
-
                             // Boost group size for specific passive mobs.
                             // Must remove + re-add since entries are immutable.
 

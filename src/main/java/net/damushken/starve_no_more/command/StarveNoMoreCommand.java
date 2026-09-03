@@ -1,0 +1,167 @@
+package net.damushken.starve_no_more.command;
+
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.FloatArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.damushken.starve_no_more.util.MobCapManager;
+import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.Text;
+
+import java.util.function.*;
+
+public class StarveNoMoreCommand {
+
+    public static void register(CommandDispatcher<ServerCommandSource> dispatcher,
+                                CommandRegistryAccess registryAccess) {
+
+        LiteralArgumentBuilder<ServerCommandSource> root = CommandManager.literal("starvenomore")
+                .requires(source -> source.hasPermissionLevel(2));
+
+        root.then(intGamerule("creature_max_capacity",
+                ModConfig.CAP_MIN, ModConfig.CAP_MAX, ModConfig.CREATURE_DEFAULT,
+                cfg -> cfg.creatureMaxCapacity, (cfg, v) -> cfg.creatureMaxCapacity = v,
+                MobCapManager::applyAll));
+
+        root.then(intGamerule("axolotls_max_capacity",
+                ModConfig.CAP_MIN, ModConfig.CAP_MAX, ModConfig.AXOLOTLS_DEFAULT,
+                cfg -> cfg.axolotlsMaxCapacity, (cfg, v) -> cfg.axolotlsMaxCapacity = v,
+                MobCapManager::applyAll));
+
+        root.then(intGamerule("water_creature_max_capacity",
+                ModConfig.CAP_MIN, ModConfig.CAP_MAX, ModConfig.WATER_CREATURE_DEFAULT,
+                cfg -> cfg.waterCreatureMaxCapacity, (cfg, v) -> cfg.waterCreatureMaxCapacity = v,
+                MobCapManager::applyAll));
+
+        root.then(intGamerule("water_ambient_max_capacity",
+                ModConfig.CAP_MIN, ModConfig.CAP_MAX, ModConfig.WATER_AMBIENT_DEFAULT,
+                cfg -> cfg.waterAmbientMaxCapacity, (cfg, v) -> cfg.waterAmbientMaxCapacity = v,
+                MobCapManager::applyAll));
+
+        root.then(boolGamerule("spawn_baby_on_bonemeal",
+                ModConfig.SPAWN_BABY_ON_BONEMEAL_DEFAULT,
+                cfg -> cfg.spawnBabyOnBonemeal, (cfg, v) -> cfg.spawnBabyOnBonemeal = v));
+
+        root.then(floatGamerule("spawn_baby_on_bonemeal_chance",
+                ModConfig.BONEMEAL_CHANCE_MIN, ModConfig.BONEMEAL_CHANCE_MAX,
+                ModConfig.SPAWN_BABY_ON_BONEMEAL_CHANCE_DEFAULT,
+                cfg -> cfg.spawnBabyOnBonemealChance, (cfg, v) -> cfg.spawnBabyOnBonemealChance = v));
+
+        root.then(floatGamerule("on_chunk_spawn_chance",
+                ModConfig.CHUNK_CHANCE_MIN, ModConfig.CHUNK_CHANCE_MAX,
+                ModConfig.ON_CHUNK_SPAWN_CHANCE_DEFAULT,
+                cfg -> cfg.onChunkSpawnChance, (cfg, v) -> cfg.onChunkSpawnChance = v));
+
+        dispatcher.register(root);
+    }
+
+    // HELPERS
+
+    private static LiteralArgumentBuilder<ServerCommandSource> intGamerule(
+            String name, int min, int max, int def,
+            Function<ModConfig, Integer> getter, BiConsumer<ModConfig, Integer> setter,
+            Runnable onChange) {
+
+        return CommandManager.literal(name)
+                .executes(ctx -> {
+                    ModConfig cfg = ModConfig.get();
+                    infoMessage(ctx.getSource(), name, String.valueOf(getter.apply(cfg)), String.valueOf(def));
+                    return 1;
+                })
+                .then(CommandManager.literal("reset")
+                        .executes(ctx -> {
+                            ModConfig cfg = ModConfig.get();
+                            setter.accept(cfg, def);
+                            cfg.save();
+                            onChange.run();
+                            resetMessage(ctx.getSource(), name, String.valueOf(def));
+                            return 1;
+                        }))
+                .then(CommandManager.argument("value", IntegerArgumentType.integer(min, max))
+                        .executes(ctx -> {
+                            int value = IntegerArgumentType.getInteger(ctx, "value");
+                            ModConfig cfg = ModConfig.get();
+                            setter.accept(cfg, value);
+                            cfg.save();
+                            onChange.run();
+                            setMessage(ctx.getSource(), name, String.valueOf(value));
+                            return 1;
+                        }));
+    }
+
+    private static LiteralArgumentBuilder<ServerCommandSource> floatGamerule(
+            String name, float min, float max, float def,
+            Function<ModConfig, Float> getter, BiConsumer<ModConfig, Float> setter) {
+
+        return CommandManager.literal(name)
+                .executes(ctx -> {
+                    ModConfig cfg = ModConfig.get();
+                    infoMessage(ctx.getSource(), name, String.valueOf(getter.apply(cfg)), String.valueOf(def));
+                    return 1;
+                })
+                .then(CommandManager.literal("reset")
+                        .executes(ctx -> {
+                            ModConfig cfg = ModConfig.get();
+                            setter.accept(cfg, def);
+                            cfg.save();
+                            resetMessage(ctx.getSource(), name, String.valueOf(def));
+                            return 1;
+                        }))
+                .then(CommandManager.argument("value", FloatArgumentType.floatArg(min, max))
+                        .executes(ctx -> {
+                            float value = FloatArgumentType.getFloat(ctx, "value");
+                            ModConfig cfg = ModConfig.get();
+                            setter.accept(cfg, value);
+                            cfg.save();
+                            setMessage(ctx.getSource(), name, String.valueOf(value));
+                            return 1;
+                        }));
+    }
+
+    private static LiteralArgumentBuilder<ServerCommandSource> boolGamerule(
+            String name, boolean def,
+            Function<ModConfig, Boolean> getter, BiConsumer<ModConfig, Boolean> setter) {
+
+        return CommandManager.literal(name)
+                .executes(ctx -> {
+                    ModConfig cfg = ModConfig.get();
+                    infoMessage(ctx.getSource(), name, String.valueOf(getter.apply(cfg)), String.valueOf(def));
+                    return 1;
+                })
+                .then(CommandManager.literal("reset")
+                        .executes(ctx -> {
+                            ModConfig cfg = ModConfig.get();
+                            setter.accept(cfg, def);
+                            cfg.save();
+                            resetMessage(ctx.getSource(), name, String.valueOf(def));
+                            return 1;
+                        }))
+                .then(CommandManager.argument("value", BoolArgumentType.bool())
+                        .executes(ctx -> {
+                            boolean value = BoolArgumentType.getBool(ctx, "value");
+                            ModConfig cfg = ModConfig.get();
+                            setter.accept(cfg, value);
+                            cfg.save();
+                            setMessage(ctx.getSource(), name, String.valueOf(value));
+                            return 1;
+                        }));
+    }
+
+    private static void infoMessage(ServerCommandSource source, String name, String current, String def) {
+        source.sendFeedback(() -> Text.literal(
+                "§7[StarveNoMore] §f" + name + " = §a" + current + " §7(default: " + def + ")"), false);
+    }
+
+    private static void setMessage(ServerCommandSource source, String name, String value) {
+        source.sendFeedback(() -> Text.literal(
+                "§7[StarveNoMore] §f" + name + " set to §a" + value), true);
+    }
+
+    private static void resetMessage(ServerCommandSource source, String name, String def) {
+        source.sendFeedback(() -> Text.literal(
+                "§7[StarveNoMore] §f" + name + " reset to default (§a" + def + "§f)"), true);
+    }
+}

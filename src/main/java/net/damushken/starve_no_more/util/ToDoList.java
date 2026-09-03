@@ -13,7 +13,7 @@ public class ToDoList {
          - USING BONE MEAL ON GRASS BLOCKS HAS CHANCE TO SPAWN BABY PASSIVE MOB  ○○○
     TODO - PASSIVE MOB SPAWNING DOUBLED DURING 3 FIRST MINUTES AFTER DAWN        ○○○
          - BOOST PASSIVE MOB SPAWN ON CHUNK GENERATION                           ○○○
-    TODO - CONFIG FILE / GAMERULES                                               ○○
+         - CONFIG FILE / GAMERULES                                               ○○
      */
 
 
