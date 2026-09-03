@@ -21,53 +21,63 @@ public class StarveNoMoreCommand {
         LiteralArgumentBuilder<ServerCommandSource> root = CommandManager.literal("starvenomore")
                 .requires(source -> source.hasPermissionLevel(2));
 
-        root.then(intGamerule("creature_max_capacity",
+        root.then(intGamerule("set_creature_max_capacity",
                 ModConfig.CAP_MIN, ModConfig.CAP_MAX, ModConfig.CREATURE_DEFAULT,
                 cfg -> cfg.creatureMaxCapacity, (cfg, v) -> cfg.creatureMaxCapacity = v,
                 MobCapManager::applyAll));
 
-        root.then(intGamerule("axolotls_max_capacity",
+        root.then(intGamerule("set_axolotls_max_capacity",
                 ModConfig.CAP_MIN, ModConfig.CAP_MAX, ModConfig.AXOLOTLS_DEFAULT,
                 cfg -> cfg.axolotlsMaxCapacity, (cfg, v) -> cfg.axolotlsMaxCapacity = v,
                 MobCapManager::applyAll));
 
-        root.then(intGamerule("water_creature_max_capacity",
+        root.then(intGamerule("set_water_creature_max_capacity",
                 ModConfig.CAP_MIN, ModConfig.CAP_MAX, ModConfig.WATER_CREATURE_DEFAULT,
                 cfg -> cfg.waterCreatureMaxCapacity, (cfg, v) -> cfg.waterCreatureMaxCapacity = v,
                 MobCapManager::applyAll));
 
-        root.then(intGamerule("water_ambient_max_capacity",
+        root.then(intGamerule("set_water_ambient_max_capacity",
                 ModConfig.CAP_MIN, ModConfig.CAP_MAX, ModConfig.WATER_AMBIENT_DEFAULT,
                 cfg -> cfg.waterAmbientMaxCapacity, (cfg, v) -> cfg.waterAmbientMaxCapacity = v,
                 MobCapManager::applyAll));
 
-        root.then(boolGamerule("spawn_baby_on_bonemeal",
+        root.then(boolGamerule("do_spawn_baby_on_bonemeal",
                 ModConfig.SPAWN_BABY_ON_BONEMEAL_DEFAULT,
                 cfg -> cfg.spawnBabyOnBonemeal, (cfg, v) -> cfg.spawnBabyOnBonemeal = v));
 
-        root.then(floatGamerule("spawn_baby_on_bonemeal_chance",
+        root.then(floatGamerule("set_spawn_baby_on_bonemeal_chance",
                 ModConfig.BONEMEAL_CHANCE_MIN, ModConfig.BONEMEAL_CHANCE_MAX,
                 ModConfig.SPAWN_BABY_ON_BONEMEAL_CHANCE_DEFAULT,
                 cfg -> cfg.spawnBabyOnBonemealChance, (cfg, v) -> cfg.spawnBabyOnBonemealChance = v));
 
-        root.then(floatGamerule("on_chunk_spawn_chance",
+        root.then(floatGamerule("set_on_chunk_spawn_chance",
                 ModConfig.CHUNK_CHANCE_MIN, ModConfig.CHUNK_CHANCE_MAX,
                 ModConfig.ON_CHUNK_SPAWN_CHANCE_DEFAULT,
                 cfg -> cfg.onChunkSpawnChance, (cfg, v) -> cfg.onChunkSpawnChance = v));
 
-        root.then(boolGamerule("dawn_breedable_offsprings",
+        root.then(boolGamerule("do_dawn_breedable_offsprings",
                 ModConfig.DAWN_BREEDABLE_OFFSPRINGS_DEFAULT,
                 cfg -> cfg.dawnBreedableOffsprings, (cfg, v) -> cfg.dawnBreedableOffsprings = v));
 
-        root.then(floatGamerule("dawn_breedable_offsprings_chance",
+        root.then(floatGamerule("set_dawn_breedable_offsprings_chance",
                 ModConfig.DAWN_CHANCE_MIN, ModConfig.DAWN_CHANCE_MAX,
                 ModConfig.DAWN_BREEDABLE_OFFSPRINGS_CHANCE_DEFAULT,
                 cfg -> cfg.dawnBreedableOffspringsChance, (cfg, v) -> cfg.dawnBreedableOffspringsChance = v));
 
-        root.then(intGamerule("dawn_breedable_max_offsprings",
+        root.then(intGamerule("set_dawn_breedable_max_offsprings",
                 ModConfig.DAWN_MAX_MIN, ModConfig.DAWN_MAX_MAX,
                 ModConfig.DAWN_BREEDABLE_MAX_OFFSPRINGS_DEFAULT,
                 cfg -> cfg.dawnBreedableMaxOffsprings, (cfg, v) -> cfg.dawnBreedableMaxOffsprings = v,
+                () -> {}));
+
+        root.then(boolGamerule("do_on_haybale_faster_baby_growth",
+                ModConfig.DO_ON_HAYBALE_FASTER_BABY_GROWTH_DEFAULT,
+                cfg -> cfg.doOnHaybaleFasterBabyGrowth, (cfg, v) -> cfg.doOnHaybaleFasterBabyGrowth = v));
+
+        root.then(intGamerule("set_on_haybale_faster_baby_growth_multiplier",
+                ModConfig.HAYBALE_MULTIPLIER_MIN, ModConfig.HAYBALE_MULTIPLIER_MAX,
+                ModConfig.ON_HAYBALE_FASTER_BABY_GROWTH_MULTIPLIER_DEFAULT,
+                cfg -> cfg.onHaybaleFasterBabyGrowthMultiplier, (cfg, v) -> cfg.onHaybaleFasterBabyGrowthMultiplier = v,
                 () -> {}));
 
         dispatcher.register(root);

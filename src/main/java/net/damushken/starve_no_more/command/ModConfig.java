@@ -46,6 +46,11 @@ public class ModConfig {
     public static final transient int DAWN_MAX_MAX = 5;
     public static final transient int DAWN_BREEDABLE_MAX_OFFSPRINGS_DEFAULT = 3;
 
+    public static final transient boolean DO_ON_HAYBALE_FASTER_BABY_GROWTH_DEFAULT = true;
+    public static final transient int HAYBALE_MULTIPLIER_MIN = 10;
+    public static final transient int HAYBALE_MULTIPLIER_MAX = 50;
+    public static final transient int ON_HAYBALE_FASTER_BABY_GROWTH_MULTIPLIER_DEFAULT = 30; // stored as percent
+
     // PERSISTED VALUES
     public int creatureMaxCapacity = CREATURE_DEFAULT;
     public int axolotlsMaxCapacity = AXOLOTLS_DEFAULT;
@@ -60,6 +65,9 @@ public class ModConfig {
     public boolean dawnBreedableOffsprings = DAWN_BREEDABLE_OFFSPRINGS_DEFAULT;
     public float dawnBreedableOffspringsChance = DAWN_BREEDABLE_OFFSPRINGS_CHANCE_DEFAULT;
     public int dawnBreedableMaxOffsprings = DAWN_BREEDABLE_MAX_OFFSPRINGS_DEFAULT;
+
+    public boolean doOnHaybaleFasterBabyGrowth = DO_ON_HAYBALE_FASTER_BABY_GROWTH_DEFAULT;
+    public int onHaybaleFasterBabyGrowthMultiplier = ON_HAYBALE_FASTER_BABY_GROWTH_MULTIPLIER_DEFAULT;
 
     // SINGLETON INSTANCE
     private static ModConfig instance;
