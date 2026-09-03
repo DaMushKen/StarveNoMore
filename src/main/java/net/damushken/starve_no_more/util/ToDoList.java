@@ -9,9 +9,10 @@ public class ToDoList {
 
 
          - RAISE PASSIVE MOB CAP FROM 10 TO 20 / 30                              ○
-    TODO - GAME CHECKS TO SPAWN A PASSIVE MOB EVERY 10 SECONDS INSTEAD OF 20     ○○
          - USING BONE MEAL ON GRASS BLOCKS HAS CHANCE TO SPAWN BABY PASSIVE MOB  ○○○
-    TODO - PASSIVE MOB SPAWNING DOUBLED DURING 3 FIRST MINUTES AFTER DAWN        ○○○
+         - FIRST 5 MIN, CHANCE FOR BREEDABLE MOBS TO GENERATE TWINS OR MORE      ○○○
+    TODO - IDLE BREEDING                                                         ○○○
+    TODO - CHICKEN LAY EGG COMMAND GAMERULE                                      ○○○
          - BOOST PASSIVE MOB SPAWN ON CHUNK GENERATION                           ○○○
          - CONFIG FILE / GAMERULES                                               ○○
      */

@@ -55,6 +55,21 @@ public class StarveNoMoreCommand {
                 ModConfig.ON_CHUNK_SPAWN_CHANCE_DEFAULT,
                 cfg -> cfg.onChunkSpawnChance, (cfg, v) -> cfg.onChunkSpawnChance = v));
 
+        root.then(boolGamerule("dawn_breedable_offsprings",
+                ModConfig.DAWN_BREEDABLE_OFFSPRINGS_DEFAULT,
+                cfg -> cfg.dawnBreedableOffsprings, (cfg, v) -> cfg.dawnBreedableOffsprings = v));
+
+        root.then(floatGamerule("dawn_breedable_offsprings_chance",
+                ModConfig.DAWN_CHANCE_MIN, ModConfig.DAWN_CHANCE_MAX,
+                ModConfig.DAWN_BREEDABLE_OFFSPRINGS_CHANCE_DEFAULT,
+                cfg -> cfg.dawnBreedableOffspringsChance, (cfg, v) -> cfg.dawnBreedableOffspringsChance = v));
+
+        root.then(intGamerule("dawn_breedable_max_offsprings",
+                ModConfig.DAWN_MAX_MIN, ModConfig.DAWN_MAX_MAX,
+                ModConfig.DAWN_BREEDABLE_MAX_OFFSPRINGS_DEFAULT,
+                cfg -> cfg.dawnBreedableMaxOffsprings, (cfg, v) -> cfg.dawnBreedableMaxOffsprings = v,
+                () -> {}));
+
         dispatcher.register(root);
     }
 

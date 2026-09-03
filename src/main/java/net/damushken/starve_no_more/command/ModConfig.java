@@ -37,6 +37,15 @@ public class ModConfig {
     public static final transient float CHUNK_CHANCE_MAX = 0.5f;
     public static final transient float ON_CHUNK_SPAWN_CHANCE_DEFAULT = 0.3f;
 
+    public static final transient boolean DAWN_BREEDABLE_OFFSPRINGS_DEFAULT = true;
+    public static final transient float DAWN_CHANCE_MIN = 0.10f;
+    public static final transient float DAWN_CHANCE_MAX = 1.0f;
+    public static final transient float DAWN_BREEDABLE_OFFSPRINGS_CHANCE_DEFAULT = 0.20f;
+
+    public static final transient int DAWN_MAX_MIN = 2;
+    public static final transient int DAWN_MAX_MAX = 5;
+    public static final transient int DAWN_BREEDABLE_MAX_OFFSPRINGS_DEFAULT = 3;
+
     // PERSISTED VALUES
     public int creatureMaxCapacity = CREATURE_DEFAULT;
     public int axolotlsMaxCapacity = AXOLOTLS_DEFAULT;
@@ -47,6 +56,10 @@ public class ModConfig {
     public float spawnBabyOnBonemealChance = SPAWN_BABY_ON_BONEMEAL_CHANCE_DEFAULT;
 
     public float onChunkSpawnChance = ON_CHUNK_SPAWN_CHANCE_DEFAULT;
+
+    public boolean dawnBreedableOffsprings = DAWN_BREEDABLE_OFFSPRINGS_DEFAULT;
+    public float dawnBreedableOffspringsChance = DAWN_BREEDABLE_OFFSPRINGS_CHANCE_DEFAULT;
+    public int dawnBreedableMaxOffsprings = DAWN_BREEDABLE_MAX_OFFSPRINGS_DEFAULT;
 
     // SINGLETON INSTANCE
     private static ModConfig instance;

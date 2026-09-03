@@ -6,7 +6,8 @@
 		"ExampleMixin",
 		"SpawnGroupAccessor",
 		"BoneMealItemMixin",
-		"SpawnSettingsMixin"
+		"SpawnSettingsMixin",
+		"AnimalEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
