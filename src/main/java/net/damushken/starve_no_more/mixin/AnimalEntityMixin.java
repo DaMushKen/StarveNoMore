@@ -2,6 +2,7 @@ package net.damushken.starve_no_more.mixin;
 
 import net.damushken.starve_no_more.StarveNoMore;
 import net.damushken.starve_no_more.command.ModConfig;
+import net.damushken.starve_no_more.util.PlumpAccess;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -20,13 +21,17 @@ public abstract class AnimalEntityMixin {
 
     @Inject(method = "breed", at = @At("TAIL"))
     private void starvenomore$onBreed(ServerWorld world, AnimalEntity other, CallbackInfo ci) {
+
+        AnimalEntity self = (AnimalEntity)(Object) this;
+        if (self instanceof PlumpAccess selfPlump) selfPlump.starvenomore$resetBreedTimer();
+        if (other instanceof PlumpAccess otherPlump) otherPlump.starvenomore$resetBreedTimer();
+
         ModConfig cfg = ModConfig.get();
         if (!cfg.dawnBreedableOffsprings) return;
 
         long timeOfDay = world.getTimeOfDay() % 24000L;
         if (timeOfDay < DAWN_START || timeOfDay > DAWN_END) return;
 
-        AnimalEntity self = (AnimalEntity)(Object) this;
         Random random = self.getRandom();
 
         int extraSpawned = 0;

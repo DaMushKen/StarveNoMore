@@ -8,7 +8,14 @@
 		"BoneMealItemMixin",
 		"SpawnSettingsMixin",
 		"AnimalEntityMixin",
-		"PassiveEntityMixin"
+		"PassiveEntityMixin",
+		"LivingEntityPlumpDropsMixin",
+		"EntityPlumpSoundMixin",
+		"AnimalEntityPlumpMixin",
+		"TemptGoalPlumpMixin"
+	],
+	"client": [
+		"LivingEntityRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -80,6 +80,23 @@ public class StarveNoMoreCommand {
                 cfg -> cfg.onHaybaleFasterBabyGrowthMultiplier, (cfg, v) -> cfg.onHaybaleFasterBabyGrowthMultiplier = v,
                 () -> {}));
 
+        root.then(boolGamerule("do_plump",
+                ModConfig.DO_PLUMP_DEFAULT,
+                cfg -> cfg.doPlump, (cfg, v) -> cfg.doPlump = v));
+
+        root.then(floatGamerule("set_plump_scale",
+                ModConfig.PLUMP_SCALE_MIN, ModConfig.PLUMP_SCALE_MAX, ModConfig.PLUMP_SCALE_DEFAULT,
+                cfg -> cfg.plumpScale, (cfg, v) -> cfg.plumpScale = v));
+
+        root.then(floatGamerule("set_plump_drops_multiplier",
+                ModConfig.PLUMP_DROPS_MULTIPLIER_MIN, ModConfig.PLUMP_DROPS_MULTIPLIER_MAX, ModConfig.PLUMP_DROPS_MULTIPLIER_DEFAULT,
+                cfg -> cfg.plumpDropsMultiplier, (cfg, v) -> cfg.plumpDropsMultiplier = v));
+
+        root.then(intGamerule("set_plump_days",
+                ModConfig.PLUMP_DAYS_MIN, ModConfig.PLUMP_DAYS_MAX, ModConfig.PLUMP_DAYS_DEFAULT,
+                cfg -> cfg.plumpDays, (cfg, v) -> cfg.plumpDays = v,
+                () -> {}));
+
         dispatcher.register(root);
     }
 

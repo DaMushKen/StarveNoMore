@@ -8,6 +8,7 @@ import net.damushken.starve_no_more.util.SpawnBoost;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
 
@@ -39,14 +40,17 @@ public class StarveNoMore implements ModInitializer {
 
 
 		SpawnBoost.register();
-		MobCapManager.applyAll();
 
 		CommandRegistrationCallback.EVENT
 				.register((dispatcher, registryAccess, environment) ->
 				StarveNoMoreCommand.register(dispatcher, registryAccess));
-		ModConfig.get();
 
-		//LOGGER.info("SpawnGroup.CREATURE capacity is now: {}", SpawnGroup.CREATURE.getCapacity());
+		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+			ModConfig.loadForServer(server);
+			MobCapManager.applyAll();
+		});
+
+		ServerLifecycleEvents.SERVER_STOPPING.register(server -> ModConfig.unload());
 
 	}
 

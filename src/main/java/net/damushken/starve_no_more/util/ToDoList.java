@@ -13,7 +13,7 @@ public class ToDoList {
          - FIRST 5 MIN, CHANCE FOR BREEDABLE MOBS TO GENERATE TWINS OR MORE      ○○○
     TODO - IDLE BREEDING                                                         ○○○
          - BABIES STANDING ON HAY BALES GROW 30% FASTER                          ○○
-    TODO - A BREEDABLE MOB, IF NOT BRED FOR 3 DAYS, BECOMES "PLUMP" (2X DROPS)   ○○○
+         - A BREEDABLE MOB, IF NOT BRED FOR 3 DAYS, BECOMES "PLUMP" (2X DROPS)   ○○○
     TODO - HERDER FLUTE (USE TO CALL PASSIVE MOBS IN A RADIUS)                   ○○○
     TODO - ENCHANTMENT THAT DOESN'T LET HIT BABY MOBS                            ○○
     TODO - PASSIVE MOBS DON'T TRAMPLE CROPS                                      ○○

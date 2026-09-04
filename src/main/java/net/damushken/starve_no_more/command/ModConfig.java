@@ -3,6 +3,8 @@ package net.damushken.starve_no_more.command;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.WorldSavePath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +18,6 @@ public class ModConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("starvenomore-config");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Path CONFIG_PATH = FabricLoader.getInstance()
-            .getConfigDir().resolve("starvenomore.json");
 
     // CONSTANTS
     public static final transient int CAP_MIN = 5;
@@ -40,7 +40,7 @@ public class ModConfig {
     public static final transient boolean DAWN_BREEDABLE_OFFSPRINGS_DEFAULT = true;
     public static final transient float DAWN_CHANCE_MIN = 0.10f;
     public static final transient float DAWN_CHANCE_MAX = 1.0f;
-    public static final transient float DAWN_BREEDABLE_OFFSPRINGS_CHANCE_DEFAULT = 0.20f;
+    public static final transient float DAWN_BREEDABLE_OFFSPRINGS_CHANCE_DEFAULT = 0.25f;
 
     public static final transient int DAWN_MAX_MIN = 2;
     public static final transient int DAWN_MAX_MAX = 5;
@@ -50,6 +50,19 @@ public class ModConfig {
     public static final transient int HAYBALE_MULTIPLIER_MIN = 10;
     public static final transient int HAYBALE_MULTIPLIER_MAX = 50;
     public static final transient int ON_HAYBALE_FASTER_BABY_GROWTH_MULTIPLIER_DEFAULT = 30; // stored as percent
+
+    public static final transient boolean DO_PLUMP_DEFAULT = true;
+    public static final transient float PLUMP_SCALE_MIN = 1.25f;
+    public static final transient float PLUMP_SCALE_MAX = 2.0f;
+    public static final transient float PLUMP_SCALE_DEFAULT = 1.25f;
+
+    public static final transient float PLUMP_DROPS_MULTIPLIER_MIN = 1.25f;
+    public static final transient float PLUMP_DROPS_MULTIPLIER_MAX = 2.0f;
+    public static final transient float PLUMP_DROPS_MULTIPLIER_DEFAULT = 1.5f;
+
+    public static final transient int PLUMP_DAYS_MIN = 1;
+    public static final transient int PLUMP_DAYS_MAX = 5;
+    public static final transient int PLUMP_DAYS_DEFAULT = 2;
 
     // PERSISTED VALUES
     public int creatureMaxCapacity = CREATURE_DEFAULT;
@@ -69,41 +82,63 @@ public class ModConfig {
     public boolean doOnHaybaleFasterBabyGrowth = DO_ON_HAYBALE_FASTER_BABY_GROWTH_DEFAULT;
     public int onHaybaleFasterBabyGrowthMultiplier = ON_HAYBALE_FASTER_BABY_GROWTH_MULTIPLIER_DEFAULT;
 
-    // SINGLETON INSTANCE
+    public boolean doPlump = DO_PLUMP_DEFAULT;
+    public float plumpScale = PLUMP_SCALE_DEFAULT;
+    public float plumpDropsMultiplier = PLUMP_DROPS_MULTIPLIER_DEFAULT;
+    public int plumpDays = PLUMP_DAYS_DEFAULT;
+
+    // PER WORLD SINGLETON
     private static ModConfig instance;
+    private static Path activeConfigPath;
 
     public static ModConfig get() {
         if (instance == null) {
-            instance = load();
+            LOGGER.warn("ModConfig.get() called before config was loaded." +
+                    "Using temporary defaults. This should not happen; report if seen repeatedly.");
+            return new ModConfig();
         }
         return instance;
     }
 
-    public static ModConfig load() {
-        if (Files.exists(CONFIG_PATH)) {
-            try (Reader reader = Files.newBufferedReader(CONFIG_PATH)) {
+    /** Called from ServerLifecycleEvents.SERVER_STARTED */
+    public static void loadForServer(MinecraftServer server) {
+        Path worldRoot = server.getSavePath(WorldSavePath.ROOT);
+        activeConfigPath = worldRoot.resolve("starvenomore.json");
+
+        if (Files.exists(activeConfigPath)) {
+            try (Reader reader = Files.newBufferedReader(activeConfigPath)) {
                 ModConfig loaded = GSON.fromJson(reader, ModConfig.class);
-                if (loaded != null) {
-                    LOGGER.info("Loaded config from {}", CONFIG_PATH);
-                    return loaded;
-                }
+                instance = (loaded != null) ? loaded : new ModConfig();
+                LOGGER.info("Loaded per-world config from {}", activeConfigPath);
             } catch (IOException e) {
-                LOGGER.error("Failed to read config, using defaults", e);
+                LOGGER.error("Failed to read world config, using defaults", e);
+                instance = new ModConfig();
             }
+        } else {
+            instance = new ModConfig();
+            instance.save();
+            LOGGER.info("Created new per-world config at {}", activeConfigPath);
         }
-        ModConfig fresh = new ModConfig();
-        fresh.save();
-        return fresh;
+    }
+
+    /** Called from ServerLifecycleEvents.SERVER_STOPPING, to release state between worlds */
+    public static void unload() {
+        instance = null;
+        activeConfigPath = null;
     }
 
     public void save() {
+        if (activeConfigPath == null) {
+            LOGGER.warn("save() called with no active world config path, skipping");
+            return;
+        }
         try {
-            Files.createDirectories(CONFIG_PATH.getParent());
-            try (Writer writer = Files.newBufferedWriter(CONFIG_PATH)) {
+            Files.createDirectories(activeConfigPath.getParent());
+            try (Writer writer = Files.newBufferedWriter(activeConfigPath)) {
                 GSON.toJson(this, writer);
             }
         } catch (IOException e) {
-            LOGGER.error("Failed to save config", e);
+            LOGGER.error("Failed to save world config", e);
         }
     }
 }
