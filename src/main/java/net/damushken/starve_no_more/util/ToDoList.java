@@ -16,7 +16,8 @@ public class ToDoList {
          - A BREEDABLE MOB, IF NOT BRED FOR 3 DAYS, BECOMES "PLUMP" (2X DROPS)   ○○○
     TODO - HERDER FLUTE (USE TO CALL PASSIVE MOBS IN A RADIUS)                   ○○○
     TODO - ENCHANTMENT THAT DOESN'T LET HIT BABY MOBS                            ○○
-    TODO - PASSIVE MOBS DON'T TRAMPLE CROPS                                      ○○
+         - GOATS DROPPING MUTTON AND STRINGS                                     ○
+    TODO - VFX AND SFX FOR WHEN MOBS BECOME PLUMP                                ○○
          - BOOST PASSIVE MOB SPAWN ON CHUNK GENERATION                           ○○○
          - CONFIG FILE / GAMERULES                                               ○○
      */

@@ -64,6 +64,10 @@ public class ModConfig {
     public static final transient int PLUMP_DAYS_MAX = 5;
     public static final transient int PLUMP_DAYS_DEFAULT = 2;
 
+    public static final transient boolean DO_GOATS_DROP_AND_PLUMP_DEFAULT = true;
+
+
+
     // PERSISTED VALUES
     public int creatureMaxCapacity = CREATURE_DEFAULT;
     public int axolotlsMaxCapacity = AXOLOTLS_DEFAULT;
@@ -87,9 +91,15 @@ public class ModConfig {
     public float plumpDropsMultiplier = PLUMP_DROPS_MULTIPLIER_DEFAULT;
     public int plumpDays = PLUMP_DAYS_DEFAULT;
 
+    public boolean doGoatsDropAndPlump = DO_GOATS_DROP_AND_PLUMP_DEFAULT;
+
+
+
     // PER WORLD SINGLETON
     private static ModConfig instance;
     private static Path activeConfigPath;
+
+
 
     public static ModConfig get() {
         if (instance == null) {

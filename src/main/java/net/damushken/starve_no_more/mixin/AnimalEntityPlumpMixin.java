@@ -2,6 +2,7 @@ package net.damushken.starve_no_more.mixin;
 
 import net.damushken.starve_no_more.command.ModConfig;
 import net.damushken.starve_no_more.util.PlumpAccess;
+import net.damushken.starve_no_more.util.PlumpUtil;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -16,28 +17,19 @@ public abstract class AnimalEntityPlumpMixin {
 
     @Inject(method = "isBreedingItem", at = @At("HEAD"), cancellable = true)
     private void starvenomore$blockPlumpBreedingItem(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.get().doPlump) return;
         AnimalEntity self = (AnimalEntity)(Object) this;
-        if (self instanceof PlumpAccess plump && plump.starvenomore$isPlump()) {
-            cir.setReturnValue(false);
-        }
+        if (PlumpUtil.isEffectivelyPlump(self)) cir.setReturnValue(false);
     }
 
     @Inject(method = "canEat", at = @At("HEAD"), cancellable = true)
     private void starvenomore$blockPlumpCanEat(CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.get().doPlump) return;
         AnimalEntity self = (AnimalEntity)(Object) this;
-        if (self instanceof PlumpAccess plump && plump.starvenomore$isPlump()) {
-            cir.setReturnValue(false);
-        }
+        if (PlumpUtil.isEffectivelyPlump(self)) cir.setReturnValue(false);
     }
 
     @Inject(method = "lovePlayer", at = @At("HEAD"), cancellable = true)
     private void starvenomore$blockPlumpLovePlayer(PlayerEntity player, CallbackInfo ci) {
-        if (!ModConfig.get().doPlump) return;
         AnimalEntity self = (AnimalEntity)(Object) this;
-        if (self instanceof PlumpAccess plump && plump.starvenomore$isPlump()) {
-            ci.cancel();
-        }
+        if (PlumpUtil.isEffectivelyPlump(self)) ci.cancel();
     }
 }

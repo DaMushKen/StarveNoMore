@@ -12,7 +12,9 @@
 		"LivingEntityPlumpDropsMixin",
 		"EntityPlumpSoundMixin",
 		"AnimalEntityPlumpMixin",
-		"TemptGoalPlumpMixin"
+		"TemptGoalPlumpMixin",
+		"GoatDropsMixin",
+		"TemptTaskPlumpMixin"
 	],
 	"client": [
 		"LivingEntityRendererMixin"

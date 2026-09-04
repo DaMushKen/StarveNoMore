@@ -97,6 +97,10 @@ public class StarveNoMoreCommand {
                 cfg -> cfg.plumpDays, (cfg, v) -> cfg.plumpDays = v,
                 () -> {}));
 
+        root.then(boolGamerule("do_goats_drop_and_plump",
+                ModConfig.DO_GOATS_DROP_AND_PLUMP_DEFAULT,
+                cfg -> cfg.doGoatsDropAndPlump, (cfg, v) -> cfg.doGoatsDropAndPlump = v));
+
         dispatcher.register(root);
     }
 

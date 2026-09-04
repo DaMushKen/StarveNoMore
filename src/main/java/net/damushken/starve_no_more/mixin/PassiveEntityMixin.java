@@ -2,6 +2,7 @@ package net.damushken.starve_no_more.mixin;
 
 import net.damushken.starve_no_more.StarveNoMore;
 import net.damushken.starve_no_more.command.ModConfig;
+import net.damushken.starve_no_more.util.ModTags;
 import net.damushken.starve_no_more.util.PlumpAccess;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -11,6 +12,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.mob.ZombieHorseEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.GoatEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -87,10 +89,10 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
         }
 
         // PLUMP TRACKING
-        if (!cfg.doPlump || self.isBaby() || starvenomore$isPlump()) return;
-        if (!(self instanceof AnimalEntity)) return;
-        if (self instanceof SkeletonHorseEntity) return;
-        if (self instanceof ZombieHorseEntity) return;
+        if (self.isBaby() || starvenomore$isPlump()) return;
+        if (!self.getType().isIn(ModTags.EntityTypes.CAN_PLUMP)) return;
+        if (!cfg.doPlump) return;
+        if (self instanceof GoatEntity && !cfg.doGoatsDropAndPlump) return;
 
         starvenomore$ticksSinceBreed++;
         int thresholdTicks = cfg.plumpDays * 24000;
