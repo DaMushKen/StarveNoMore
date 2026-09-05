@@ -101,6 +101,10 @@ public class StarveNoMoreCommand {
                 ModConfig.DO_GOATS_DROP_AND_PLUMP_DEFAULT,
                 cfg -> cfg.doGoatsDropAndPlump, (cfg, v) -> cfg.doGoatsDropAndPlump = v));
 
+        root.then(boolGamerule("do_wild_plump",
+                ModConfig.DO_WILD_PLUMP_DEFAULT,
+                cfg -> cfg.doWildPlump, (cfg, v) -> cfg.doWildPlump = v));
+
         dispatcher.register(root);
     }
 

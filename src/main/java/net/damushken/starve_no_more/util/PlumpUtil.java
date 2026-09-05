@@ -20,6 +20,7 @@ public class PlumpUtil {
         if (!cfg.doPlump) return false;
         if (!entity.getType().isIn(ModTags.EntityTypes.CAN_PLUMP)) return false;
         if (entity instanceof GoatEntity && !cfg.doGoatsDropAndPlump) return false;
+        if (!cfg.doWildPlump && !plump.starvenomore$isPlayerLineage()) return false;
 
         return true;
     }

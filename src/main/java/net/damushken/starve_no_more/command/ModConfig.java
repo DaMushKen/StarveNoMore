@@ -66,6 +66,8 @@ public class ModConfig {
 
     public static final transient boolean DO_GOATS_DROP_AND_PLUMP_DEFAULT = true;
 
+    public static final transient boolean DO_WILD_PLUMP_DEFAULT = false;
+
 
 
     // PERSISTED VALUES
@@ -92,6 +94,8 @@ public class ModConfig {
     public int plumpDays = PLUMP_DAYS_DEFAULT;
 
     public boolean doGoatsDropAndPlump = DO_GOATS_DROP_AND_PLUMP_DEFAULT;
+
+    public boolean doWildPlump = DO_WILD_PLUMP_DEFAULT;
 
 
 

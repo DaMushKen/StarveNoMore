@@ -33,6 +33,10 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
             DataTracker.registerData(PassiveEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     @Unique
+    private static final TrackedData<Boolean> STARVENOMORE_PLAYER_LINEAGE =
+            DataTracker.registerData(PassiveEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+
+    @Unique
     private float starvenomore$growthAccumulator = 0f;
     @Unique
     private int starvenomore$ticksSinceBreed = 0;
@@ -45,6 +49,17 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
     @Inject(method = "initDataTracker", at = @At("TAIL"))
     private void starvenomore$initPlumpTracker(CallbackInfo ci) {
         starvenomore$tracker().startTracking(STARVENOMORE_PLUMP, false);
+        starvenomore$tracker().startTracking(STARVENOMORE_PLAYER_LINEAGE, false);
+    }
+
+    @Override
+    public boolean starvenomore$isPlayerLineage() {
+        return starvenomore$tracker().get(STARVENOMORE_PLAYER_LINEAGE);
+    }
+
+    @Override
+    public void starvenomore$setPlayerLineage(boolean value) {
+        starvenomore$tracker().set(STARVENOMORE_PLAYER_LINEAGE, value);
     }
 
     @Override
@@ -93,6 +108,7 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
         if (!self.getType().isIn(ModTags.EntityTypes.CAN_PLUMP)) return;
         if (!cfg.doPlump) return;
         if (self instanceof GoatEntity && !cfg.doGoatsDropAndPlump) return;
+        if (!cfg.doWildPlump && !starvenomore$isPlayerLineage()) return;
 
         starvenomore$ticksSinceBreed++;
         int thresholdTicks = cfg.plumpDays * 24000;
@@ -105,11 +121,13 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
     private void starvenomore$writePlump(NbtCompound nbt, CallbackInfo ci) {
         nbt.putInt("StarveNoMoreTicksSinceBreed", starvenomore$ticksSinceBreed);
         nbt.putBoolean("StarveNoMorePlump", starvenomore$isPlump());
+        nbt.putBoolean("StarveNoMorePlayerLineage", starvenomore$isPlayerLineage());
     }
 
     @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
     private void starvenomore$readPlump(NbtCompound nbt, CallbackInfo ci) {
         starvenomore$ticksSinceBreed = nbt.getInt("StarveNoMoreTicksSinceBreed");
         starvenomore$setPlump(nbt.getBoolean("StarveNoMorePlump"));
+        starvenomore$setPlayerLineage(nbt.getBoolean("StarveNoMorePlayerLineage"));
     }
 }

@@ -15,16 +15,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AnimalEntity.class)
 public abstract class AnimalEntityMixin {
 
-    // dawn window: first 1000 ticks of the day (~50 seconds after sunrise)
+    // first 5 minutes of the day
     private static final long DAWN_START = 0;
-    private static final long DAWN_END = 6000; // 5 minutes
+    private static final long DAWN_END = 6000;
 
-    @Inject(method = "breed", at = @At("TAIL"))
-    private void starvenomore$onBreed(ServerWorld world, AnimalEntity other, CallbackInfo ci) {
-
+    @Inject(
+            method = "breed(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/passive/AnimalEntity;Lnet/minecraft/entity/passive/PassiveEntity;)V",
+            at = @At("TAIL")
+    )
+    private void starvenomore$onBreedWithBaby(ServerWorld world, AnimalEntity other, PassiveEntity baby, CallbackInfo ci) {
         AnimalEntity self = (AnimalEntity)(Object) this;
-        if (self instanceof PlumpAccess selfPlump) selfPlump.starvenomore$resetBreedTimer();
-        if (other instanceof PlumpAccess otherPlump) otherPlump.starvenomore$resetBreedTimer();
+
+        if (self instanceof PlumpAccess selfPlump) {
+            selfPlump.starvenomore$resetBreedTimer();
+            selfPlump.starvenomore$setPlayerLineage(true);
+        }
+        if (other instanceof PlumpAccess otherPlump) {
+            otherPlump.starvenomore$resetBreedTimer();
+            otherPlump.starvenomore$setPlayerLineage(true);
+        }
+        if (baby instanceof PlumpAccess babyPlump) {
+            babyPlump.starvenomore$setPlayerLineage(true);
+        }
 
         ModConfig cfg = ModConfig.get();
         if (!cfg.dawnBreedableOffsprings) return;
@@ -35,7 +47,6 @@ public abstract class AnimalEntityMixin {
         Random random = self.getRandom();
 
         int extraSpawned = 0;
-        // slots beyond the first offspring, up to configured max
         for (int i = 1; i < cfg.dawnBreedableMaxOffsprings; i++) {
             if (random.nextFloat() >= cfg.dawnBreedableOffspringsChance) continue;
 
@@ -47,6 +58,9 @@ public abstract class AnimalEntityMixin {
                     self.getX(), self.getY(), self.getZ(),
                     0.0F, 0.0F
             );
+            if (extraChild instanceof PlumpAccess extraPlump) {
+                extraPlump.starvenomore$setPlayerLineage(true);
+            }
             world.spawnEntity(extraChild);
             extraSpawned++;
         }
