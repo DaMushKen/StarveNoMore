@@ -15,6 +15,7 @@ public class ToDoList {
          - BABIES STANDING ON HAY BALES GROW 30% FASTER                          ○○
          - A BREEDABLE MOB, IF NOT BRED FOR 3 DAYS, BECOMES "PLUMP" (2X DROPS)   ○○○
     TODO - HERDER FLUTE (USE TO CALL PASSIVE MOBS IN A RADIUS)                   ○○○
+    TODO - CUSTOM MODELS FOR PLUMP MOBS                                          ○○○
     TODO - ENCHANTMENT THAT DOESN'T LET HIT BABY MOBS                            ○○
          - GOATS DROPPING MUTTON AND STRINGS                                     ○
     TODO - VFX AND SFX FOR WHEN MOBS BECOME PLUMP                                ○○
