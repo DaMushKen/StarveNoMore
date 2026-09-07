@@ -17,6 +17,8 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -114,6 +116,18 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
         int thresholdTicks = cfg.plumpDays * 24000;
         if (starvenomore$ticksSinceBreed >= thresholdTicks) {
             starvenomore$setPlump(true);
+
+            if (self.getWorld() instanceof ServerWorld serverWorld) {
+
+                serverWorld.playSound(null, self.getX(), self.getY(), self.getZ(),
+                        SoundEvents.ENTITY_GENERIC_EAT, self.getSoundCategory(),
+                        2.0f, 0.5f);
+
+                serverWorld.spawnParticles(ParticleTypes.CLOUD,
+                        self.getX(), self.getY() + 0.5, self.getZ(),
+                        24, 0.4, 0.4, 0.4, 0.02);
+            }
+
         }
     }
 
