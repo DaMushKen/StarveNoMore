@@ -120,12 +120,18 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
             if (self.getWorld() instanceof ServerWorld serverWorld) {
 
                 serverWorld.playSound(null, self.getX(), self.getY(), self.getZ(),
-                        SoundEvents.ENTITY_GENERIC_EAT, self.getSoundCategory(),
-                        2.0f, 0.5f);
+                        SoundEvents.BLOCK_FUNGUS_BREAK, self.getSoundCategory(),
+                        5.0f, 0.5f);
 
-                serverWorld.spawnParticles(ParticleTypes.CLOUD,
+                serverWorld.spawnParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                        self.getX(), self.getY() + 0.2, self.getZ(),
+                        16, 0.7, 0.1, 0.7, 0);
+
+
+
+                serverWorld.spawnParticles(ParticleTypes.EFFECT,
                         self.getX(), self.getY() + 0.5, self.getZ(),
-                        24, 0.4, 0.4, 0.4, 0.02);
+                        24, 0.4, 1.0, 0.4, 0.05);
             }
 
         }

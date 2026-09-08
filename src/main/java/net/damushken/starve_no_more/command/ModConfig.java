@@ -21,15 +21,15 @@ public class ModConfig {
 
     // CONSTANTS
     public static final transient int CAP_MIN = 5;
-    public static final transient int CAP_MAX = 50;
-    public static final transient int CREATURE_DEFAULT = 40;
+    public static final transient int CAP_MAX = 100;
+    public static final transient int CREATURE_DEFAULT = 45;
     public static final transient int AXOLOTLS_DEFAULT = 10;
     public static final transient int WATER_CREATURE_DEFAULT = 20;
     public static final transient int WATER_AMBIENT_DEFAULT = 35;
 
     public static final transient boolean SPAWN_BABY_ON_BONEMEAL_DEFAULT = true;
 
-    public static final transient float BONEMEAL_CHANCE_MIN = 0.10f;
+    public static final transient float BONEMEAL_CHANCE_MIN = 0.05f;
     public static final transient float BONEMEAL_CHANCE_MAX = 1.0f;
     public static final transient float SPAWN_BABY_ON_BONEMEAL_CHANCE_DEFAULT = 0.15f;
 
@@ -38,9 +38,9 @@ public class ModConfig {
     public static final transient float ON_CHUNK_SPAWN_CHANCE_DEFAULT = 0.3f;
 
     public static final transient boolean DAWN_BREEDABLE_OFFSPRINGS_DEFAULT = true;
-    public static final transient float DAWN_CHANCE_MIN = 0.10f;
+    public static final transient float DAWN_CHANCE_MIN = 0.05f;
     public static final transient float DAWN_CHANCE_MAX = 1.0f;
-    public static final transient float DAWN_BREEDABLE_OFFSPRINGS_CHANCE_DEFAULT = 0.25f;
+    public static final transient float DAWN_BREEDABLE_OFFSPRINGS_CHANCE_DEFAULT = 0.20f;
 
     public static final transient int DAWN_MAX_MIN = 2;
     public static final transient int DAWN_MAX_MAX = 5;
@@ -48,7 +48,7 @@ public class ModConfig {
 
     public static final transient boolean DO_ON_HAYBALE_FASTER_BABY_GROWTH_DEFAULT = true;
     public static final transient int HAYBALE_MULTIPLIER_MIN = 10;
-    public static final transient int HAYBALE_MULTIPLIER_MAX = 50;
+    public static final transient int HAYBALE_MULTIPLIER_MAX = 100;
     public static final transient int ON_HAYBALE_FASTER_BABY_GROWTH_MULTIPLIER_DEFAULT = 30; // stored as percent
 
     public static final transient boolean DO_PLUMP_DEFAULT = true;

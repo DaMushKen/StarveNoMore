@@ -18,7 +18,7 @@ public class ToDoList {
     TODO - CUSTOM MODELS FOR PLUMP MOBS                                          ○○○
     TODO - ENCHANTMENT THAT DOESN'T LET HIT BABY MOBS                            ○○
          - GOATS DROPPING MUTTON AND STRINGS                                     ○
-    TODO - VFX AND SFX FOR WHEN MOBS BECOME PLUMP                                ○○
+         - VFX AND SFX FOR WHEN MOBS BECOME PLUMP                                ○○
     TODO - VFX AND SFX FOR DAWN OFFSPRINGS                                       ○○
          - BOOST PASSIVE MOB SPAWN ON CHUNK GENERATION                           ○○○
          - CONFIG FILE / GAMERULES                                               ○○

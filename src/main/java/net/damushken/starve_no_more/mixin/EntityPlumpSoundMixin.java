@@ -23,7 +23,7 @@ public abstract class EntityPlumpSoundMixin {
         ci.cancel();
         if (!self.isSilent()) {
             self.getWorld().playSound(null, self.getX(), self.getY(), self.getZ(),
-                    sound, self.getSoundCategory(), volume * 2.0f, pitch * 0.65f);
+                    sound, self.getSoundCategory(), volume * 2.0f, pitch * 0.5f);
         }
     }
 }
