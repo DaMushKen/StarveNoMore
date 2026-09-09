@@ -2,9 +2,11 @@ package net.damushken.starve_no_more.mixin;
 
 import net.damushken.starve_no_more.StarveNoMore;
 import net.damushken.starve_no_more.command.ModConfig;
+import net.damushken.starve_no_more.particle.ModParticles;
 import net.damushken.starve_no_more.util.PlumpAccess;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.random.Random;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,9 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AnimalEntity.class)
 public abstract class AnimalEntityMixin {
 
-    // first 5 minutes of the day
     private static final long DAWN_START = 0;
-    private static final long DAWN_END = 6000;
 
     @Inject(
             method = "breed(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/passive/AnimalEntity;Lnet/minecraft/entity/passive/PassiveEntity;)V",
@@ -39,6 +39,9 @@ public abstract class AnimalEntityMixin {
         }
 
         ModConfig cfg = ModConfig.get();
+
+        int DAWN_END = cfg.dawnBreedableMaxTicks;
+
         if (!cfg.dawnBreedableOffsprings) return;
 
         long timeOfDay = world.getTimeOfDay() % 24000L;
@@ -62,6 +65,15 @@ public abstract class AnimalEntityMixin {
                 extraPlump.starvenomore$setPlayerLineage(true);
             }
             world.spawnEntity(extraChild);
+
+            if (extraChild.getWorld() instanceof ServerWorld serverWorld) {
+
+                serverWorld.spawnParticles(ModParticles.GOLDEN_HEART_PARTICLE,
+                        extraChild.getX(), extraChild.getY() + 1.5, extraChild.getZ(),
+                        3, 0.25, 0.5, 0.25, 0.05);
+
+            }
+
             extraSpawned++;
         }
 

@@ -46,6 +46,10 @@ public class ModConfig {
     public static final transient int DAWN_MAX_MAX = 5;
     public static final transient int DAWN_BREEDABLE_MAX_OFFSPRINGS_DEFAULT = 3;
 
+    public static final transient int DAWN_BREEDABLE_MAX_TICKS_MIN = 2400; //2 min
+    public static final transient int DAWN_BREEDABLE_MAX_TICKS_MAX = 12000; //10 min
+    public static final transient int DAWN_BREEDABLE_MAX_TICKS_DEFAULT = 4800; //4 min
+
     public static final transient boolean DO_ON_HAYBALE_FASTER_BABY_GROWTH_DEFAULT = true;
     public static final transient int HAYBALE_MULTIPLIER_MIN = 10;
     public static final transient int HAYBALE_MULTIPLIER_MAX = 100;
@@ -84,6 +88,7 @@ public class ModConfig {
     public boolean dawnBreedableOffsprings = DAWN_BREEDABLE_OFFSPRINGS_DEFAULT;
     public float dawnBreedableOffspringsChance = DAWN_BREEDABLE_OFFSPRINGS_CHANCE_DEFAULT;
     public int dawnBreedableMaxOffsprings = DAWN_BREEDABLE_MAX_OFFSPRINGS_DEFAULT;
+    public int dawnBreedableMaxTicks = DAWN_BREEDABLE_MAX_TICKS_DEFAULT;
 
     public boolean doOnHaybaleFasterBabyGrowth = DO_ON_HAYBALE_FASTER_BABY_GROWTH_DEFAULT;
     public int onHaybaleFasterBabyGrowthMultiplier = ON_HAYBALE_FASTER_BABY_GROWTH_MULTIPLIER_DEFAULT;

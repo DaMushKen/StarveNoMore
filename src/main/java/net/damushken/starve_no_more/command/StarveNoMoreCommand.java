@@ -105,6 +105,12 @@ public class StarveNoMoreCommand {
                 ModConfig.DO_WILD_PLUMP_DEFAULT,
                 cfg -> cfg.doWildPlump, (cfg, v) -> cfg.doWildPlump = v));
 
+        root.then(intGamerule("set_dawn_breedable_max_ticks",
+                ModConfig.DAWN_BREEDABLE_MAX_TICKS_MIN, ModConfig.DAWN_BREEDABLE_MAX_TICKS_MAX,
+                ModConfig.DAWN_BREEDABLE_MAX_TICKS_DEFAULT,
+                cfg -> cfg.dawnBreedableMaxTicks, (cfg, v) -> cfg.dawnBreedableMaxTicks = v,
+                () -> {}));
+
         dispatcher.register(root);
     }
 

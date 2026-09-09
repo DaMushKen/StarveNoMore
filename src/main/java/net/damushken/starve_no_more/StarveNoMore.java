@@ -3,6 +3,7 @@ package net.damushken.starve_no_more;
 import net.damushken.starve_no_more.command.ModConfig;
 import net.damushken.starve_no_more.command.StarveNoMoreCommand;
 import net.damushken.starve_no_more.mixin.SpawnGroupAccessor;
+import net.damushken.starve_no_more.particle.ModParticles;
 import net.damushken.starve_no_more.util.MobCapManager;
 import net.damushken.starve_no_more.util.SpawnBoost;
 import net.fabricmc.api.ModInitializer;
@@ -28,6 +29,8 @@ public class StarveNoMore implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+
+		ModParticles.registerParticles();
 
 
 
