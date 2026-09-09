@@ -20,6 +20,7 @@ public class ToDoList {
          - GOATS DROPPING MUTTON AND STRINGS                                     ○
          - VFX AND SFX FOR WHEN MOBS BECOME PLUMP                                ○○
     TODO - VFX AND SFX FOR DAWN OFFSPRINGS                                       ○○
+         - VFX AND SFX FOR BONEMEAL SPAWN                                        ○○
          - BOOST PASSIVE MOB SPAWN ON CHUNK GENERATION                           ○○○
          - CONFIG FILE / GAMERULES                                               ○○
      */

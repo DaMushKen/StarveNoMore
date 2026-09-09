@@ -27,5 +27,14 @@ public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagPro
                 .add(EntityType.RABBIT)
                 .add(EntityType.HOGLIN);
 
+
+
+        getOrCreateTagBuilder(ModTags.EntityTypes.CAN_SPAWN_FROM_BONEMEAL)
+                .add(EntityType.PIG)
+                .add(EntityType.SHEEP)
+                .add(EntityType.CHICKEN)
+                .add(EntityType.COW)
+                .add(EntityType.RABBIT);
+
     }
 }
