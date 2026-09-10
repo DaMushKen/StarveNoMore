@@ -4,6 +4,7 @@ import net.damushken.starve_no_more.StarveNoMore;
 import net.damushken.starve_no_more.command.ModConfig;
 import net.damushken.starve_no_more.util.ModTags;
 import net.damushken.starve_no_more.util.PlumpAccess;
+import net.damushken.starve_no_more.util.PlumpUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;
@@ -39,6 +40,14 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
             DataTracker.registerData(PassiveEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     @Unique
+    private static final TrackedData<Boolean> STARVENOMORE_EFFECTIVE_PLUMP_SYNCED =
+            DataTracker.registerData(PassiveEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+
+    @Unique
+    private static final TrackedData<Float> STARVENOMORE_SYNCED_SCALE =
+            DataTracker.registerData(PassiveEntity.class, TrackedDataHandlerRegistry.FLOAT);
+
+    @Unique
     private float starvenomore$growthAccumulator = 0f;
     @Unique
     private int starvenomore$ticksSinceBreed = 0;
@@ -52,6 +61,28 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
     private void starvenomore$initPlumpTracker(CallbackInfo ci) {
         starvenomore$tracker().startTracking(STARVENOMORE_PLUMP, false);
         starvenomore$tracker().startTracking(STARVENOMORE_PLAYER_LINEAGE, false);
+        starvenomore$tracker().startTracking(STARVENOMORE_EFFECTIVE_PLUMP_SYNCED, false);
+        starvenomore$tracker().startTracking(STARVENOMORE_SYNCED_SCALE, 1.25f);
+    }
+
+    @Override
+    public boolean starvenomore$isEffectivelyPlumpSynced() {
+        return starvenomore$tracker().get(STARVENOMORE_EFFECTIVE_PLUMP_SYNCED);
+    }
+
+    @Override
+    public void starvenomore$setEffectivelyPlumpSynced(boolean value) {
+        starvenomore$tracker().set(STARVENOMORE_EFFECTIVE_PLUMP_SYNCED, value);
+    }
+
+    @Override
+    public float starvenomore$getSyncedScale() {
+        return starvenomore$tracker().get(STARVENOMORE_SYNCED_SCALE);
+    }
+
+    @Override
+    public void starvenomore$setSyncedScale(float scale) {
+        starvenomore$tracker().set(STARVENOMORE_SYNCED_SCALE, scale);
     }
 
     @Override
@@ -102,6 +133,21 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
                     int age = self.getBreedingAge();
                     if (age < 0) self.setBreedingAge(Math.min(age + 1, 0));
                 }
+            }
+        }
+
+        // Recompute + sync effective plump state every tick
+        // This lets clients (especially on dedicated servers, where ModConfig
+        // is not directly readable) always show the correct plump visuals
+        // without needing config access themselves.
+        boolean effective = PlumpUtil.isEffectivelyPlump(self);
+        if (starvenomore$isEffectivelyPlumpSynced() != effective) {
+            starvenomore$setEffectivelyPlumpSynced(effective);
+        }
+        if (effective) {
+            float currentScale = cfg.plumpScale;
+            if (starvenomore$getSyncedScale() != currentScale) {
+                starvenomore$setSyncedScale(currentScale);
             }
         }
 

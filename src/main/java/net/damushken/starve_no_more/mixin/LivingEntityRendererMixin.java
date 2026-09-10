@@ -20,8 +20,9 @@ public class LivingEntityRendererMixin {
     private void starvenomore$scalePlump(LivingEntity entity, float yaw, float tickDelta,
                                          MatrixStack matrices, VertexConsumerProvider vertexConsumers,
                                          int light, CallbackInfo ci) {
-        if (entity instanceof PassiveEntity passive && PlumpUtil.isEffectivelyPlump(passive)) {
-            float scale = ModConfig.get().plumpScale;
+
+        if (entity instanceof PlumpAccess plump && plump.starvenomore$isEffectivelyPlumpSynced()) {
+            float scale = plump.starvenomore$getSyncedScale();
             matrices.scale(scale, scale, scale);
         }
     }
