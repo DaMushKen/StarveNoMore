@@ -47,10 +47,10 @@ public class VideoScripts {
     "This is the perfect spot for my base"
 
 
+     +
 
 
-
-    [SCENE 3: BONEMEAL]
+    [SCENE 2: BONEMEAL]
 
     {Third person view}
 
@@ -77,7 +77,7 @@ public class VideoScripts {
 
 
 
-    [SCENE 4: DAWN]
+    [SCENE 3: DAWN]
 
     {Third person view}
 
@@ -95,7 +95,13 @@ public class VideoScripts {
 
     "Strange, it seems to work only in the first minutes of the morning"
 
-    The player then puts some hay bales for decoration in the ranch.
+
+
+
+
+    [SCENE 4: HAY BALE]
+
+    The player puts some hay bales for decoration in the ranch.
 
     "The babies take so long to grow up..."
 
