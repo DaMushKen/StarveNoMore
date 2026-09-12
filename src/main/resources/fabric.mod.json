@@ -3,7 +3,7 @@
 	"id": "starve_no_more",
 	"version": "${version}",
 	"name": "Starve No More!",
-	"description": "A vanilla+ mod with the goal of boosting the spawnrate of passive mobs!",
+	"description": "A simple mod that boosts spawn rate for passive mobs and adds many QoL features! (heavily configurable)",
 	"authors": [
 		"DaMushKen"
 	],
