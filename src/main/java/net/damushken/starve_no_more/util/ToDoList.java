@@ -14,7 +14,6 @@ public class ToDoList {
          - BABIES STANDING ON HAY BALES GROW 30% FASTER                          ○○
          - A BREEDABLE MOB, IF NOT BRED FOR 3 DAYS, BECOMES "PLUMP" (2X DROPS)   ○○○
     TODO - CUSTOM MODELS FOR PLUMP MOBS                                          ○○○
-    TODO - ENCHANTMENT THAT DOESN'T LET HIT BABY MOBS                            ○○
          - GOATS DROPPING MUTTON AND STRINGS                                     ○
          - VFX AND SFX FOR WHEN MOBS BECOME PLUMP                                ○○
          - VFX FOR DAWN OFFSPRINGS                                               ○○
