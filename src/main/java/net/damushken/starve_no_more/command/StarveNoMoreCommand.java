@@ -9,11 +9,9 @@ import net.damushken.starve_no_more.util.MobCapManager;
 import net.damushken.starve_no_more.util.PlumpAccess;
 import net.damushken.starve_no_more.util.PlumpUtil;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Box;
 
 import java.util.function.*;
 

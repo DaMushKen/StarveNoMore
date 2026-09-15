@@ -58,11 +58,11 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
     }
 
     @Inject(method = "initDataTracker", at = @At("TAIL"))
-    private void starvenomore$initPlumpTracker(CallbackInfo ci) {
-        starvenomore$tracker().startTracking(STARVENOMORE_PLUMP, false);
-        starvenomore$tracker().startTracking(STARVENOMORE_PLAYER_LINEAGE, false);
-        starvenomore$tracker().startTracking(STARVENOMORE_EFFECTIVE_PLUMP_SYNCED, false);
-        starvenomore$tracker().startTracking(STARVENOMORE_SYNCED_SCALE, 1.25f);
+    private void starvenomore$initPlumpTracker(DataTracker.Builder builder, CallbackInfo ci) {
+        builder.add(STARVENOMORE_PLUMP, false);
+        builder.add(STARVENOMORE_PLAYER_LINEAGE, false);
+        builder.add(STARVENOMORE_EFFECTIVE_PLUMP_SYNCED, false);
+        builder.add(STARVENOMORE_SYNCED_SCALE, 1.25f);
     }
 
     @Override

@@ -2,6 +2,7 @@ package net.damushken.starve_no_more.command;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mojang.authlib.yggdrasil.response.HasJoinedMinecraftServerResponse;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;

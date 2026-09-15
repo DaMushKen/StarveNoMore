@@ -15,12 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AnimalEntity.class)
 public abstract class AnimalEntityPlumpMixin {
 
-    @Inject(method = "isBreedingItem", at = @At("HEAD"), cancellable = true)
-    private void starvenomore$blockPlumpBreedingItem(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        AnimalEntity self = (AnimalEntity)(Object) this;
-        if (PlumpUtil.isEffectivelyPlump(self)) cir.setReturnValue(false);
-    }
-
     @Inject(method = "canEat", at = @At("HEAD"), cancellable = true)
     private void starvenomore$blockPlumpCanEat(CallbackInfoReturnable<Boolean> cir) {
         AnimalEntity self = (AnimalEntity)(Object) this;

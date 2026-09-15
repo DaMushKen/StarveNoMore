@@ -2,7 +2,7 @@ package net.damushken.starve_no_more.particle;
 
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.util.math.MathHelper;
 
 public class GoldenHeartParticle extends SpriteBillboardParticle {
@@ -40,14 +40,14 @@ public class GoldenHeartParticle extends SpriteBillboardParticle {
         return this.scale * MathHelper.clamp((this.age + tickDelta) / this.maxAge * 32.0F, 0.0F, 1.0F);
     }
 
-    public static class Factory implements ParticleFactory<DefaultParticleType> {
+    public static class Factory implements ParticleFactory<SimpleParticleType> {
         private final SpriteProvider sprites;
 
         public Factory(SpriteProvider spriteProvider) {
             this.sprites = spriteProvider;
         }
 
-        public Particle createParticle(DefaultParticleType particleType, ClientWorld clientWorld,
+        public Particle createParticle(SimpleParticleType particleType, ClientWorld clientWorld,
                                        double x, double y, double z, double xd, double yd, double zd) {
             return new GoldenHeartParticle(clientWorld, x, y, z, this.sprites, xd, yd, zd);
         }
