@@ -14,7 +14,7 @@ import net.minecraft.world.biome.SpawnSettings;
 public class SpawnBoost {
 
     public static void register() {
-        BiomeModifications.create(new Identifier(StarveNoMore.MOD_ID, "boost_creature_spawns"))
+        BiomeModifications.create(Identifier.of(StarveNoMore.MOD_ID, "boost_creature_spawns"))
                 .add(ModificationPhase.ADDITIONS,
                         BiomeSelectors.includeByKey(
 

@@ -53,7 +53,7 @@ public class BoneMealItemMixin {
         if (RANDOM.nextFloat() >= cfg.spawnBabyOnBonemealChance) return;
 
         TagKey<EntityType<?>> tag = TagKey.of(RegistryKeys.ENTITY_TYPE,
-                new Identifier(StarveNoMore.MOD_ID, "can_spawn_from_bonemeal"));
+                Identifier.of(StarveNoMore.MOD_ID, "can_spawn_from_bonemeal"));
 
         List<EntityType<?>> pool = Registries.ENTITY_TYPE.getEntryList(tag)
                 .map(entries -> {

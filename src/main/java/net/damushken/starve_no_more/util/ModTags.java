@@ -20,7 +20,7 @@ public class ModTags {
     public static class Blocks {
 
         private static TagKey<Block> createBlockTag(String name) {
-            return TagKey.of(RegistryKeys.BLOCK, new Identifier(StarveNoMore.MOD_ID, name));
+            return TagKey.of(RegistryKeys.BLOCK, Identifier.of(StarveNoMore.MOD_ID, name));
         }
     }
 
@@ -29,7 +29,7 @@ public class ModTags {
     public static class Items {
 
         private static TagKey<Item> createItemTag(String name) {
-            return TagKey.of(RegistryKeys.ITEM, new Identifier(StarveNoMore.MOD_ID, name));
+            return TagKey.of(RegistryKeys.ITEM, Identifier.of(StarveNoMore.MOD_ID, name));
         }
     }
 
@@ -48,7 +48,7 @@ public class ModTags {
 
 
         private static TagKey<EntityType<?>> createEntityTypeTag(String name) {
-            return TagKey.of(RegistryKeys.ENTITY_TYPE, new Identifier(StarveNoMore.MOD_ID, name));
+            return TagKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(StarveNoMore.MOD_ID, name));
         }
 
     }

@@ -13,7 +13,7 @@ public class ModParticles {
 
 
     private static SimpleParticleType registerParticle(String name, SimpleParticleType particleType) {
-        return Registry.register(Registries.PARTICLE_TYPE, new Identifier(StarveNoMore.MOD_ID, name), particleType);
+        return Registry.register(Registries.PARTICLE_TYPE, Identifier.of(StarveNoMore.MOD_ID, name), particleType);
     }
 
     public static void registerParticles() {
