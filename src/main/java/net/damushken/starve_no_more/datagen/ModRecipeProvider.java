@@ -3,6 +3,7 @@ package net.damushken.starve_no_more.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.server.recipe.RecipeExporter;
+import net.minecraft.data.server.recipe.RecipeGenerator;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
@@ -15,7 +16,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     }
 
     @Override
-    public void generate(RecipeExporter exporter) {
+    protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup registries, RecipeExporter exporter) {
+        return null;
+    }
 
+    @Override
+    public String getName() {
+        return "";
     }
 }

@@ -7,6 +7,7 @@ import net.damushken.starve_no_more.util.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemUsageContext;
@@ -55,20 +56,15 @@ public class BoneMealItemMixin {
         TagKey<EntityType<?>> tag = TagKey.of(RegistryKeys.ENTITY_TYPE,
                 Identifier.of(StarveNoMore.MOD_ID, "can_spawn_from_bonemeal"));
 
-        List<EntityType<?>> pool = Registries.ENTITY_TYPE.getEntryList(tag)
-                .map(entries -> {
-                    List<EntityType<?>> list = new java.util.ArrayList<>();
-                    for (RegistryEntry<EntityType<?>> entry : entries) {
-                        list.add(entry.value());
-                    }
-                    return list;
-                })
-                .orElse(List.of());
+        List<EntityType<?>> pool = new java.util.ArrayList<>();
+        for (RegistryEntry<EntityType<?>> entry : Registries.ENTITY_TYPE.iterateEntries(tag)) {
+            pool.add(entry.value());
+        }
 
         if (pool.isEmpty()) return;
 
         EntityType<?> type = pool.get(RANDOM.nextInt(pool.size()));
-        var entity = type.create(world);
+        var entity = type.create(world, SpawnReason.TRIGGERED);
         if (!(entity instanceof PassiveEntity passiveEntity)) return;
 
         passiveEntity.refreshPositionAndAngles(

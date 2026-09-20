@@ -18,10 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class GoatDropsMixin {
 
     @Inject(method = "dropLoot", at = @At("TAIL"))
-    private void starvenomore$goatExtraDrops(DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
+    private void starvenomore$goatExtraDrops(ServerWorld world, DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
         LivingEntity self = (LivingEntity)(Object) this;
         if (!(self instanceof GoatEntity goat)) return;
-        if (!(self.getWorld() instanceof ServerWorld)) return;
+        if (!(self.getWorld() instanceof ServerWorld serverWorld)) return;
         if (!ModConfig.get().doGoatsDropAndPlump) return;
 
         var random = self.getRandom();
@@ -32,22 +32,22 @@ public abstract class GoatDropsMixin {
 
         if (PlumpUtil.isEffectivelyPlump(goat) && ModConfig.get().doPlump == true) {
 
-            self.dropStack(new ItemStack(
+            self.dropStack(serverWorld, new ItemStack(
                     Items.MUTTON, (int) (mutton * ModConfig.get().plumpDropsMultiplier) +1
             ));
 
             if (string > 0) {
-                self.dropStack(new ItemStack(
+                self.dropStack(serverWorld, new ItemStack(
                         Items.STRING, (int) (string * ModConfig.get().plumpDropsMultiplier) +1
                 ));
             }
 
         } else if (!PlumpUtil.isEffectivelyPlump(goat) || ModConfig.get().doPlump == false) {
 
-            self.dropStack(new ItemStack(Items.MUTTON, mutton));
+            self.dropStack(serverWorld, new ItemStack(Items.MUTTON, mutton));
 
             if (string > 0) {
-                self.dropStack(new ItemStack(Items.STRING, string));
+                self.dropStack(serverWorld, new ItemStack(Items.STRING, string));
             }
         }
 

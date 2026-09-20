@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class LivingEntityPlumpDropsMixin {
 
     @Inject(method = "dropLoot", at = @At("TAIL"))
-    private void starvenomore$multiplyPlumpDrops(DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
+    private void starvenomore$multiplyPlumpDrops(ServerWorld world, DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
         LivingEntity self = (LivingEntity)(Object) this;
         if (!(self instanceof PassiveEntity passive)) return;
         if (!PlumpUtil.isEffectivelyPlump(passive)) return;

@@ -18,14 +18,14 @@ public abstract class EntityPlumpSoundMixin {
     private void starvenomore$lowerPlumpSound(SoundEvent sound, float volume, float pitch, CallbackInfo ci) {
         Entity self = (Entity)(Object) this;
         if (self.getWorld().isClient) return;
-        if (!ModConfig.get().doPlump) return;
 
-        if (self instanceof PlumpAccess plump && plump.starvenomore$isPlump()) {
-            ci.cancel();
-            if (!self.isSilent()) {
-                self.getWorld().playSound(null, self.getX(), self.getY(), self.getZ(),
-                        sound, self.getSoundCategory(), volume * 0.5f, pitch * 0.65f);
-            }
+        if (!(self instanceof PassiveEntity passive)) return;
+        if (!PlumpUtil.isEffectivelyPlump(passive)) return;
+
+        ci.cancel();
+        if (!self.isSilent()) {
+            self.getWorld().playSound(null, self.getX(), self.getY(), self.getZ(),
+                    sound, self.getSoundCategory(), volume * 0.5f, pitch * 0.65f);
         }
     }
 }

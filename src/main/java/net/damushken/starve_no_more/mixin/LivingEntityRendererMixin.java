@@ -5,6 +5,7 @@ import net.damushken.starve_no_more.util.PlumpAccess;
 import net.damushken.starve_no_more.util.PlumpUtil;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -14,16 +15,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntityRenderer.class)
-public class LivingEntityRendererMixin {
+public abstract class LivingEntityRendererMixin {
 
-    @Inject(method = "render", at = @At("HEAD"))
-    private void starvenomore$scalePlump(LivingEntity entity, float yaw, float tickDelta,
-                                         MatrixStack matrices, VertexConsumerProvider vertexConsumers,
-                                         int light, CallbackInfo ci) {
-
-        if (entity instanceof PlumpAccess plump && plump.starvenomore$isEffectivelyPlumpSynced()) {
-            float scale = plump.starvenomore$getSyncedScale();
-            matrices.scale(scale, scale, scale);
+    @Inject(method = "updateRenderState", at = @At("TAIL"))
+    private void starvenomore$scalePlump(LivingEntity livingEntity, LivingEntityRenderState state, float tickDelta, CallbackInfo ci) {
+        if (livingEntity instanceof PlumpAccess plump && plump.starvenomore$isEffectivelyPlumpSynced()) {
+            float plumpScale = plump.starvenomore$getSyncedScale();
+            state.baseScale *= plumpScale;
         }
     }
 }
