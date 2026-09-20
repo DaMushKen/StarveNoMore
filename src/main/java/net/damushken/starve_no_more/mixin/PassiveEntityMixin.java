@@ -192,8 +192,8 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
 
     @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
     private void starvenomore$readPlump(NbtCompound nbt, CallbackInfo ci) {
-        starvenomore$ticksSinceBreed = nbt.getInt("StarveNoMoreTicksSinceBreed");
-        starvenomore$setPlump(nbt.getBoolean("StarveNoMorePlump"));
-        starvenomore$setPlayerLineage(nbt.getBoolean("StarveNoMorePlayerLineage"));
+        starvenomore$ticksSinceBreed = nbt.getInt("StarveNoMoreTicksSinceBreed").orElse(0);
+        starvenomore$setPlump(nbt.getBoolean("StarveNoMorePlump").orElse(false));
+        starvenomore$setPlayerLineage(nbt.getBoolean("StarveNoMorePlayerLineage").orElse(false));
     }
 }

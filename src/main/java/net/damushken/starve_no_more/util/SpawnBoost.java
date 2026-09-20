@@ -51,19 +51,19 @@ public class SpawnBoost {
 
                             spawnSettings.removeSpawnsOfEntityType(EntityType.COW);
                             spawnSettings.addSpawn(SpawnGroup.CREATURE,
-                                    new SpawnSettings.SpawnEntry(EntityType.COW, 1, 2, 5));
+                                    new SpawnSettings.SpawnEntry(EntityType.COW, 2, 5), 1);
 
                             spawnSettings.removeSpawnsOfEntityType(EntityType.SHEEP);
                             spawnSettings.addSpawn(SpawnGroup.CREATURE,
-                                    new SpawnSettings.SpawnEntry(EntityType.SHEEP, 1, 2, 5));
+                                    new SpawnSettings.SpawnEntry(EntityType.SHEEP, 2, 5), 1);
 
                             spawnSettings.removeSpawnsOfEntityType(EntityType.CHICKEN);
                             spawnSettings.addSpawn(SpawnGroup.CREATURE,
-                                    new SpawnSettings.SpawnEntry(EntityType.CHICKEN, 1, 2, 5));
+                                    new SpawnSettings.SpawnEntry(EntityType.CHICKEN, 2, 5), 1);
 
                             spawnSettings.removeSpawnsOfEntityType(EntityType.PIG);
                             spawnSettings.addSpawn(SpawnGroup.CREATURE,
-                                    new SpawnSettings.SpawnEntry(EntityType.PIG, 1, 2, 5));
+                                    new SpawnSettings.SpawnEntry(EntityType.PIG, 2, 5), 1);
                         });
     }
 }
