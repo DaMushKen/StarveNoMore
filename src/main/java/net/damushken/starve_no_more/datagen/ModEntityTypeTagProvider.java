@@ -16,7 +16,7 @@ public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagPro
     @Override
     protected void configure(RegistryWrapper.WrapperLookup lookup) {
 
-        getOrCreateTagBuilder(ModTags.EntityTypes.CAN_PLUMP)
+        valueLookupBuilder(ModTags.EntityTypes.CAN_PLUMP)
 
                 .add(EntityType.COW)
                 .add(EntityType.GOAT)
@@ -29,7 +29,7 @@ public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagPro
 
 
 
-        getOrCreateTagBuilder(ModTags.EntityTypes.CAN_SPAWN_FROM_BONEMEAL)
+        valueLookupBuilder(ModTags.EntityTypes.CAN_SPAWN_FROM_BONEMEAL)
                 .add(EntityType.PIG)
                 .add(EntityType.SHEEP)
                 .add(EntityType.CHICKEN)

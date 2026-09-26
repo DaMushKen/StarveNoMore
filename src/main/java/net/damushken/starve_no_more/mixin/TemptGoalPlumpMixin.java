@@ -4,6 +4,7 @@ import net.damushken.starve_no_more.command.ModConfig;
 import net.damushken.starve_no_more.util.PlumpAccess;
 import net.damushken.starve_no_more.util.PlumpUtil;
 import net.minecraft.entity.ai.goal.TemptGoal;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class TemptGoalPlumpMixin {
 
     @Shadow
-    protected PathAwareEntity mob;
+    protected MobEntity mob;
 
     @Inject(method = "canStart", at = @At("RETURN"), cancellable = true)
     private void starvenomore$blockPlumpTempt(CallbackInfoReturnable<Boolean> cir) {

@@ -20,6 +20,8 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -183,17 +185,17 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
         }
     }
 
-    @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
-    private void starvenomore$writePlump(NbtCompound nbt, CallbackInfo ci) {
-        nbt.putInt("StarveNoMoreTicksSinceBreed", starvenomore$ticksSinceBreed);
-        nbt.putBoolean("StarveNoMorePlump", starvenomore$isPlump());
-        nbt.putBoolean("StarveNoMorePlayerLineage", starvenomore$isPlayerLineage());
+    @Inject(method = "writeCustomData", at = @At("TAIL"))
+    private void starvenomore$writePlump(WriteView view, CallbackInfo ci) {
+        view.putInt("StarveNoMoreTicksSinceBreed", starvenomore$ticksSinceBreed);
+        view.putBoolean("StarveNoMorePlump", starvenomore$isPlump());
+        view.putBoolean("StarveNoMorePlayerLineage", starvenomore$isPlayerLineage());
     }
 
-    @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
-    private void starvenomore$readPlump(NbtCompound nbt, CallbackInfo ci) {
-        starvenomore$ticksSinceBreed = nbt.getInt("StarveNoMoreTicksSinceBreed").orElse(0);
-        starvenomore$setPlump(nbt.getBoolean("StarveNoMorePlump").orElse(false));
-        starvenomore$setPlayerLineage(nbt.getBoolean("StarveNoMorePlayerLineage").orElse(false));
+    @Inject(method = "readCustomData", at = @At("TAIL"))
+    private void starvenomore$readPlump(ReadView view, CallbackInfo ci) {
+        starvenomore$ticksSinceBreed = view.getInt("StarveNoMoreTicksSinceBreed", 0);
+        starvenomore$setPlump(view.getBoolean("StarveNoMorePlump", false));
+        starvenomore$setPlayerLineage(view.getBoolean("StarveNoMorePlayerLineage", false));
     }
 }
