@@ -22,14 +22,6 @@ public abstract class FollowTemptationPlumpMixin {
         }
     }
 
-    @Inject(method = "start", at = @At("HEAD"), cancellable = true)
-    private void starvenomore$blockPlumpRun(ServerLevel serverWorld, PathfinderMob pathAwareEntity,
-                                            long l, CallbackInfo ci) {
-        if (pathAwareEntity instanceof AgeableMob passive && PlumpUtil.isEffectivelyPlump(passive)) {
-            ci.cancel();
-        }
-    }
-
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void starvenomore$blockPlumpKeepRunning(ServerLevel serverWorld, PathfinderMob pathAwareEntity,
                                                     long l, CallbackInfo ci) {

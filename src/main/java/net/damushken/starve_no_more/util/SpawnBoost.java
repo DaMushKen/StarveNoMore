@@ -1,10 +1,13 @@
 package net.damushken.starve_no_more.util;
 
+import com.mojang.serialization.MapCodec;
 import net.damushken.starve_no_more.StarveNoMore;
 import net.fabricmc.fabric.api.biome.v1.BiomeModification;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
@@ -47,24 +50,46 @@ public class SpawnBoost {
                         biomeModificationContext -> {
                             var spawnSettings = biomeModificationContext.getMobSpawnSettings();
 
+                            IntProvider intProvider = new IntProvider() {
+                                @Override
+                                public int sample(RandomSource random) {
+                                    return 5;
+                                }
+
+                                @Override
+                                public int minInclusive() {
+                                    return 2;
+                                }
+
+                                @Override
+                                public int maxInclusive() {
+                                    return 5;
+                                }
+
+                                @Override
+                                public MapCodec<? extends IntProvider> codec() {
+                                    return null;
+                                }
+                            };
+
                             // Boost group size for specific passive mobs.
                             // Must remove + re-add since entries are immutable.
 
                             spawnSettings.removeSpawnsOfEntityType(EntityTypes.COW);
                             spawnSettings.addSpawn(MobCategory.CREATURE,
-                                    new MobSpawnSettings.SpawnerData(EntityTypes.COW, 2, 5), 1);
+                                    new MobSpawnSettings.SpawnerData(EntityTypes.COW, intProvider), 1);
 
                             spawnSettings.removeSpawnsOfEntityType(EntityTypes.SHEEP);
                             spawnSettings.addSpawn(MobCategory.CREATURE,
-                                    new MobSpawnSettings.SpawnerData(EntityTypes.SHEEP, 2, 5), 1);
+                                    new MobSpawnSettings.SpawnerData(EntityTypes.SHEEP, intProvider), 1);
 
                             spawnSettings.removeSpawnsOfEntityType(EntityTypes.CHICKEN);
                             spawnSettings.addSpawn(MobCategory.CREATURE,
-                                    new MobSpawnSettings.SpawnerData(EntityTypes.CHICKEN, 2, 5), 1);
+                                    new MobSpawnSettings.SpawnerData(EntityTypes.CHICKEN, intProvider), 1);
 
                             spawnSettings.removeSpawnsOfEntityType(EntityTypes.PIG);
                             spawnSettings.addSpawn(MobCategory.CREATURE,
-                                    new MobSpawnSettings.SpawnerData(EntityTypes.PIG, 2, 5), 1);
+                                    new MobSpawnSettings.SpawnerData(EntityTypes.PIG, intProvider), 1);
                         });
     }
 }
