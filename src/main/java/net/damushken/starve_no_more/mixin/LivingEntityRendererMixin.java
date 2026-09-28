@@ -3,7 +3,6 @@ package net.damushken.starve_no_more.mixin;
 import net.damushken.starve_no_more.command.ModConfig;
 import net.damushken.starve_no_more.util.PlumpAccess;
 import net.damushken.starve_no_more.util.PlumpUtil;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;

@@ -3,8 +3,13 @@ package net.damushken.starve_no_more.datagen;
 import net.damushken.starve_no_more.util.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.entity.EntityTypeIds;
+import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.animal.cow.Cow;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -16,25 +21,25 @@ public class ModEntityTypeTagProvider extends FabricTagsProvider.EntityTypeTagsP
     @Override
     protected void addTags(HolderLookup.Provider lookup) {
 
-        valueLookupBuilder(ModTags.EntityTypes.CAN_PLUMP)
+        builder(ModTags.EntityTypes.CAN_PLUMP)
 
-                .add(EntityType.COW)
-                .add(EntityType.GOAT)
-                .add(EntityType.MOOSHROOM)
-                .add(EntityType.SHEEP)
-                .add(EntityType.PIG)
-                .add(EntityType.CHICKEN)
-                .add(EntityType.RABBIT)
-                .add(EntityType.HOGLIN);
+                .add(EntityTypeIds.COW)
+                .add(EntityTypeIds.GOAT)
+                .add(EntityTypeIds.MOOSHROOM)
+                .add(EntityTypeIds.SHEEP)
+                .add(EntityTypeIds.PIG)
+                .add(EntityTypeIds.CHICKEN)
+                .add(EntityTypeIds.RABBIT)
+                .add(EntityTypeIds.HOGLIN);
 
 
 
-        valueLookupBuilder(ModTags.EntityTypes.CAN_SPAWN_FROM_BONEMEAL)
-                .add(EntityType.PIG)
-                .add(EntityType.SHEEP)
-                .add(EntityType.CHICKEN)
-                .add(EntityType.COW)
-                .add(EntityType.RABBIT);
+        builder(ModTags.EntityTypes.CAN_SPAWN_FROM_BONEMEAL)
+                .add(EntityTypeIds.PIG)
+                .add(EntityTypeIds.SHEEP)
+                .add(EntityTypeIds.CHICKEN)
+                .add(EntityTypeIds.COW)
+                .add(EntityTypeIds.RABBIT);
 
     }
 }

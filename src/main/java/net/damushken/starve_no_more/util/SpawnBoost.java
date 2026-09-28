@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.biome.Biomes;
@@ -49,21 +50,21 @@ public class SpawnBoost {
                             // Boost group size for specific passive mobs.
                             // Must remove + re-add since entries are immutable.
 
-                            spawnSettings.removeSpawnsOfEntityType(EntityType.COW);
+                            spawnSettings.removeSpawnsOfEntityType(EntityTypes.COW);
                             spawnSettings.addSpawn(MobCategory.CREATURE,
-                                    new MobSpawnSettings.SpawnerData(EntityType.COW, 2, 5), 1);
+                                    new MobSpawnSettings.SpawnerData(EntityTypes.COW, 2, 5), 1);
 
-                            spawnSettings.removeSpawnsOfEntityType(EntityType.SHEEP);
+                            spawnSettings.removeSpawnsOfEntityType(EntityTypes.SHEEP);
                             spawnSettings.addSpawn(MobCategory.CREATURE,
-                                    new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 2, 5), 1);
+                                    new MobSpawnSettings.SpawnerData(EntityTypes.SHEEP, 2, 5), 1);
 
-                            spawnSettings.removeSpawnsOfEntityType(EntityType.CHICKEN);
+                            spawnSettings.removeSpawnsOfEntityType(EntityTypes.CHICKEN);
                             spawnSettings.addSpawn(MobCategory.CREATURE,
-                                    new MobSpawnSettings.SpawnerData(EntityType.CHICKEN, 2, 5), 1);
+                                    new MobSpawnSettings.SpawnerData(EntityTypes.CHICKEN, 2, 5), 1);
 
-                            spawnSettings.removeSpawnsOfEntityType(EntityType.PIG);
+                            spawnSettings.removeSpawnsOfEntityType(EntityTypes.PIG);
                             spawnSettings.addSpawn(MobCategory.CREATURE,
-                                    new MobSpawnSettings.SpawnerData(EntityType.PIG, 2, 5), 1);
+                                    new MobSpawnSettings.SpawnerData(EntityTypes.PIG, 2, 5), 1);
                         });
     }
 }
