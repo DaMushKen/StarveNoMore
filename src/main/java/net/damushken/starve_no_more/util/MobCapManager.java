@@ -1,17 +1,17 @@
 package net.damushken.starve_no_more.util;
 
 import net.damushken.starve_no_more.command.ModConfig;
-import net.damushken.starve_no_more.mixin.SpawnGroupAccessor;
-import net.minecraft.entity.SpawnGroup;
+import net.damushken.starve_no_more.mixin.MobCategoryAccessor;
+import net.minecraft.world.entity.MobCategory;
 
 public class MobCapManager {
 
     public static void applyAll() {
         ModConfig cfg = ModConfig.get();
-        ((SpawnGroupAccessor)(Object) SpawnGroup.CREATURE).setCapacity(cfg.creatureMaxCapacity);
-        ((SpawnGroupAccessor)(Object) SpawnGroup.AXOLOTLS).setCapacity(cfg.axolotlsMaxCapacity);
-        ((SpawnGroupAccessor)(Object) SpawnGroup.WATER_CREATURE).setCapacity(cfg.waterCreatureMaxCapacity);
-        ((SpawnGroupAccessor)(Object) SpawnGroup.WATER_AMBIENT).setCapacity(cfg.waterAmbientMaxCapacity);
+        ((MobCategoryAccessor)(Object) MobCategory.CREATURE).setMax(cfg.creatureMaxCapacity);
+        ((MobCategoryAccessor)(Object) MobCategory.AXOLOTLS).setMax(cfg.axolotlsMaxCapacity);
+        ((MobCategoryAccessor)(Object) MobCategory.WATER_CREATURE).setMax(cfg.waterCreatureMaxCapacity);
+        ((MobCategoryAccessor)(Object) MobCategory.WATER_AMBIENT).setMax(cfg.waterAmbientMaxCapacity);
     }
 
 }

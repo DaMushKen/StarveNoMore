@@ -1,15 +1,15 @@
 package net.damushken.starve_no_more.util;
 
 import net.damushken.starve_no_more.StarveNoMore;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
 
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ public class ModTags {
     public static class Blocks {
 
         private static TagKey<Block> createBlockTag(String name) {
-            return TagKey.of(RegistryKeys.BLOCK, Identifier.of(StarveNoMore.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(StarveNoMore.MOD_ID, name));
         }
     }
 
@@ -29,7 +29,7 @@ public class ModTags {
     public static class Items {
 
         private static TagKey<Item> createItemTag(String name) {
-            return TagKey.of(RegistryKeys.ITEM, Identifier.of(StarveNoMore.MOD_ID, name));
+            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(StarveNoMore.MOD_ID, name));
         }
     }
 
@@ -48,7 +48,7 @@ public class ModTags {
 
 
         private static TagKey<EntityType<?>> createEntityTypeTag(String name) {
-            return TagKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(StarveNoMore.MOD_ID, name));
+            return TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(StarveNoMore.MOD_ID, name));
         }
 
     }

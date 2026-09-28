@@ -15,7 +15,6 @@ public class StarveNoMoreDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(ModBlockTagProvider::new);
 		pack.addProvider(ModEntityTypeTagProvider::new);
 		pack.addProvider(ModItemTagProvider::new);
-		pack.addProvider(ModLootTableProvider::new);
 		pack.addProvider(ModModelProvider::new);
 
 

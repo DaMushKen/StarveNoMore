@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.mojang.authlib.yggdrasil.response.HasJoinedMinecraftServerResponse;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.WorldSavePath;
+import net.minecraft.world.level.storage.LevelResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,7 +122,7 @@ public class ModConfig {
 
     /** Called from ServerLifecycleEvents.SERVER_STARTED */
     public static void loadForServer(MinecraftServer server) {
-        Path worldRoot = server.getSavePath(WorldSavePath.ROOT);
+        Path worldRoot = server.getWorldPath(LevelResource.ROOT);
         activeConfigPath = worldRoot.resolve("starvenomore.json");
 
         if (Files.exists(activeConfigPath)) {

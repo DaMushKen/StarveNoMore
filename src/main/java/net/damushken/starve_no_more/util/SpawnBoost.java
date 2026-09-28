@@ -5,65 +5,65 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModification;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.biome.BiomeKeys;
-import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 
 public class SpawnBoost {
 
     public static void register() {
-        BiomeModifications.create(Identifier.of(StarveNoMore.MOD_ID, "boost_creature_spawns"))
+        BiomeModifications.create(Identifier.fromNamespaceAndPath(StarveNoMore.MOD_ID, "boost_creature_spawns"))
                 .add(ModificationPhase.ADDITIONS,
                         BiomeSelectors.includeByKey(
 
-                                BiomeKeys.OLD_GROWTH_BIRCH_FOREST,
-                                BiomeKeys.BIRCH_FOREST,
-                                BiomeKeys.DARK_FOREST,
-                                BiomeKeys.FLOWER_FOREST,
-                                BiomeKeys.WINDSWEPT_FOREST,
-                                BiomeKeys.WINDSWEPT_HILLS,
-                                BiomeKeys.WINDSWEPT_GRAVELLY_HILLS,
-                                BiomeKeys.FOREST,
-                                BiomeKeys.PLAINS,
-                                BiomeKeys.BADLANDS,
-                                BiomeKeys.ERODED_BADLANDS,
-                                BiomeKeys.SUNFLOWER_PLAINS,
-                                BiomeKeys.WOODED_BADLANDS,
-                                BiomeKeys.SWAMP,
-                                BiomeKeys.WINDSWEPT_SAVANNA,
-                                BiomeKeys.SAVANNA,
-                                BiomeKeys.SPARSE_JUNGLE,
-                                BiomeKeys.TAIGA,
-                                BiomeKeys.SNOWY_TAIGA,
-                                BiomeKeys.OLD_GROWTH_SPRUCE_TAIGA,
-                                BiomeKeys.OLD_GROWTH_PINE_TAIGA,
-                                BiomeKeys.SAVANNA_PLATEAU,
-                                BiomeKeys.JUNGLE,
-                                BiomeKeys.BAMBOO_JUNGLE),
+                                Biomes.OLD_GROWTH_BIRCH_FOREST,
+                                Biomes.BIRCH_FOREST,
+                                Biomes.DARK_FOREST,
+                                Biomes.FLOWER_FOREST,
+                                Biomes.WINDSWEPT_FOREST,
+                                Biomes.WINDSWEPT_HILLS,
+                                Biomes.WINDSWEPT_GRAVELLY_HILLS,
+                                Biomes.FOREST,
+                                Biomes.PLAINS,
+                                Biomes.BADLANDS,
+                                Biomes.ERODED_BADLANDS,
+                                Biomes.SUNFLOWER_PLAINS,
+                                Biomes.WOODED_BADLANDS,
+                                Biomes.SWAMP,
+                                Biomes.WINDSWEPT_SAVANNA,
+                                Biomes.SAVANNA,
+                                Biomes.SPARSE_JUNGLE,
+                                Biomes.TAIGA,
+                                Biomes.SNOWY_TAIGA,
+                                Biomes.OLD_GROWTH_SPRUCE_TAIGA,
+                                Biomes.OLD_GROWTH_PINE_TAIGA,
+                                Biomes.SAVANNA_PLATEAU,
+                                Biomes.JUNGLE,
+                                Biomes.BAMBOO_JUNGLE),
 
                         biomeModificationContext -> {
-                            var spawnSettings = biomeModificationContext.getSpawnSettings();
+                            var spawnSettings = biomeModificationContext.getMobSpawnSettings();
 
                             // Boost group size for specific passive mobs.
                             // Must remove + re-add since entries are immutable.
 
                             spawnSettings.removeSpawnsOfEntityType(EntityType.COW);
-                            spawnSettings.addSpawn(SpawnGroup.CREATURE,
-                                    new SpawnSettings.SpawnEntry(EntityType.COW, 2, 5), 1);
+                            spawnSettings.addSpawn(MobCategory.CREATURE,
+                                    new MobSpawnSettings.SpawnerData(EntityType.COW, 2, 5), 1);
 
                             spawnSettings.removeSpawnsOfEntityType(EntityType.SHEEP);
-                            spawnSettings.addSpawn(SpawnGroup.CREATURE,
-                                    new SpawnSettings.SpawnEntry(EntityType.SHEEP, 2, 5), 1);
+                            spawnSettings.addSpawn(MobCategory.CREATURE,
+                                    new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 2, 5), 1);
 
                             spawnSettings.removeSpawnsOfEntityType(EntityType.CHICKEN);
-                            spawnSettings.addSpawn(SpawnGroup.CREATURE,
-                                    new SpawnSettings.SpawnEntry(EntityType.CHICKEN, 2, 5), 1);
+                            spawnSettings.addSpawn(MobCategory.CREATURE,
+                                    new MobSpawnSettings.SpawnerData(EntityType.CHICKEN, 2, 5), 1);
 
                             spawnSettings.removeSpawnsOfEntityType(EntityType.PIG);
-                            spawnSettings.addSpawn(SpawnGroup.CREATURE,
-                                    new SpawnSettings.SpawnEntry(EntityType.PIG, 2, 5), 1);
+                            spawnSettings.addSpawn(MobCategory.CREATURE,
+                                    new MobSpawnSettings.SpawnerData(EntityType.PIG, 2, 5), 1);
                         });
     }
 }

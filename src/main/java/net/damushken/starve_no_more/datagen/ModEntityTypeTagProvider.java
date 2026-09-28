@@ -1,20 +1,20 @@
 package net.damushken.starve_no_more.datagen;
 
 import net.damushken.starve_no_more.util.ModTags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.entity.EntityType;
-import net.minecraft.registry.RegistryWrapper;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.core.HolderLookup;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ModEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagProvider {
-    public ModEntityTypeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+public class ModEntityTypeTagProvider extends FabricTagsProvider.EntityTypeTagsProvider {
+    public ModEntityTypeTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
         super(output, completableFuture);
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup lookup) {
+    protected void addTags(HolderLookup.Provider lookup) {
 
         valueLookupBuilder(ModTags.EntityTypes.CAN_PLUMP)
 

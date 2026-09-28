@@ -2,10 +2,10 @@ package net.damushken.starve_no_more.particle;
 
 import net.damushken.starve_no_more.StarveNoMore;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 
 public class ModParticles {
     public static final SimpleParticleType GOLDEN_HEART_PARTICLE =
@@ -13,7 +13,7 @@ public class ModParticles {
 
 
     private static SimpleParticleType registerParticle(String name, SimpleParticleType particleType) {
-        return Registry.register(Registries.PARTICLE_TYPE, Identifier.of(StarveNoMore.MOD_ID, name), particleType);
+        return Registry.register(BuiltInRegistries.PARTICLE_TYPE, Identifier.fromNamespaceAndPath(StarveNoMore.MOD_ID, name), particleType);
     }
 
     public static void registerParticles() {

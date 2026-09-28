@@ -2,7 +2,7 @@ package net.damushken.starve_no_more;
 
 import net.damushken.starve_no_more.command.ModConfig;
 import net.damushken.starve_no_more.command.StarveNoMoreCommand;
-import net.damushken.starve_no_more.mixin.SpawnGroupAccessor;
+import net.damushken.starve_no_more.mixin.MobCategoryAccessor;
 import net.damushken.starve_no_more.particle.ModParticles;
 import net.damushken.starve_no_more.util.MobCapManager;
 import net.damushken.starve_no_more.util.SpawnBoost;
@@ -10,8 +10,8 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.resources.Identifier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +34,11 @@ public class StarveNoMore implements ModInitializer {
 
 
 
-		((SpawnGroupAccessor)(Object) SpawnGroup.CREATURE).setCapacity(40); //default = 10
+		((MobCategoryAccessor)(Object) MobCategory.CREATURE).setMax(40); //default = 10
 
-		((SpawnGroupAccessor)(Object) SpawnGroup.AXOLOTLS).setCapacity(10); //default = 5
-		((SpawnGroupAccessor)(Object) SpawnGroup.WATER_CREATURE).setCapacity(20); //default = 5
-		((SpawnGroupAccessor)(Object) SpawnGroup.WATER_AMBIENT).setCapacity(35); //default = 20
+		((MobCategoryAccessor)(Object) MobCategory.AXOLOTLS).setMax(10); //default = 5
+		((MobCategoryAccessor)(Object) MobCategory.WATER_CREATURE).setMax(20); //default = 5
+		((MobCategoryAccessor)(Object) MobCategory.WATER_AMBIENT).setMax(35); //default = 20
 
 
 
@@ -58,6 +58,6 @@ public class StarveNoMore implements ModInitializer {
 	}
 
 	public static Identifier id(String path) {
-		return Identifier.of(MOD_ID, path);
+		return Identifier.fromNamespaceAndPath(MOD_ID, path);
 	}
 }

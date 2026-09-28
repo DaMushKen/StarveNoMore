@@ -4,27 +4,27 @@ import net.damushken.starve_no_more.StarveNoMore;
 import net.damushken.starve_no_more.command.ModConfig;
 import net.damushken.starve_no_more.particle.ModParticles;
 import net.damushken.starve_no_more.util.PlumpAccess;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.PassiveEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(AnimalEntity.class)
-public abstract class AnimalEntityMixin {
+@Mixin(Animal.class)
+public abstract class AnimalMixin {
 
     private static final long DAWN_START = 0;
 
     @Inject(
-            method = "breed(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/passive/AnimalEntity;Lnet/minecraft/entity/passive/PassiveEntity;)V",
+            method = "finalizeSpawnChildFromBreeding(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/animal/Animal;Lnet/minecraft/world/entity/AgeableMob;)V",
             at = @At("TAIL")
     )
-    private void starvenomore$onBreedWithBaby(ServerWorld world, AnimalEntity other, PassiveEntity baby, CallbackInfo ci) {
-        AnimalEntity self = (AnimalEntity)(Object) this;
+    private void starvenomore$onBreedWithBaby(ServerLevel world, Animal other, AgeableMob baby, CallbackInfo ci) {
+        Animal self = (Animal)(Object) this;
 
         if (self instanceof PlumpAccess selfPlump) {
             selfPlump.starvenomore$resetBreedTimer();
@@ -44,31 +44,31 @@ public abstract class AnimalEntityMixin {
 
         if (!cfg.dawnBreedableOffsprings) return;
 
-        long timeOfDay = world.getTimeOfDay() % 24000L;
+        long timeOfDay = world.getOverworldClockTime() % 24000L;
         if (timeOfDay < DAWN_START || timeOfDay > DAWN_END) return;
 
-        Random random = self.getRandom();
+        RandomSource random = self.getRandom();
 
         int extraSpawned = 0;
         for (int i = 1; i < cfg.dawnBreedableMaxOffsprings; i++) {
             if (random.nextFloat() >= cfg.dawnBreedableOffspringsChance) continue;
 
-            PassiveEntity extraChild = self.createChild(world, other);
+            AgeableMob extraChild = self.getBreedOffspring(world, other);
             if (extraChild == null) continue;
 
-            extraChild.setBreedingAge(-24000);
-            extraChild.refreshPositionAndAngles(
+            extraChild.setAge(-24000);
+            extraChild.snapTo(
                     self.getX(), self.getY(), self.getZ(),
                     0.0F, 0.0F
             );
             if (extraChild instanceof PlumpAccess extraPlump) {
                 extraPlump.starvenomore$setPlayerLineage(true);
             }
-            world.spawnEntity(extraChild);
+            world.addFreshEntity(extraChild);
 
-            if (extraChild.getEntityWorld() instanceof ServerWorld serverWorld) {
+            if (extraChild.level() instanceof ServerLevel serverWorld) {
 
-                serverWorld.spawnParticles(ModParticles.GOLDEN_HEART_PARTICLE,
+                serverWorld.sendParticles(ModParticles.GOLDEN_HEART_PARTICLE,
                         extraChild.getX(), extraChild.getY() + 1.5, extraChild.getZ(),
                         3, 0.25, 0.5, 0.25, 0.05);
 

@@ -5,26 +5,26 @@ import net.damushken.starve_no_more.command.ModConfig;
 import net.damushken.starve_no_more.util.ModTags;
 import net.damushken.starve_no_more.util.PlumpAccess;
 import net.damushken.starve_no_more.util.PlumpUtil;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.SkeletonHorseEntity;
-import net.minecraft.entity.mob.ZombieHorseEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.GoatEntity;
-import net.minecraft.entity.passive.PassiveEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.EffectParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.world.entity.animal.equine.SkeletonHorse;
+import net.minecraft.world.entity.animal.equine.ZombieHorse;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.goat.Goat;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.SpellParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.core.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -32,24 +32,24 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PassiveEntity.class)
-public abstract class PassiveEntityMixin implements PlumpAccess {
+@Mixin(AgeableMob.class)
+public abstract class AgeableMobMixin implements PlumpAccess {
 
     @Unique
-    private static final TrackedData<Boolean> STARVENOMORE_PLUMP =
-            DataTracker.registerData(PassiveEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> STARVENOMORE_PLUMP =
+            SynchedEntityData.defineId(AgeableMob.class, EntityDataSerializers.BOOLEAN);
 
     @Unique
-    private static final TrackedData<Boolean> STARVENOMORE_PLAYER_LINEAGE =
-            DataTracker.registerData(PassiveEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> STARVENOMORE_PLAYER_LINEAGE =
+            SynchedEntityData.defineId(AgeableMob.class, EntityDataSerializers.BOOLEAN);
 
     @Unique
-    private static final TrackedData<Boolean> STARVENOMORE_EFFECTIVE_PLUMP_SYNCED =
-            DataTracker.registerData(PassiveEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> STARVENOMORE_EFFECTIVE_PLUMP_SYNCED =
+            SynchedEntityData.defineId(AgeableMob.class, EntityDataSerializers.BOOLEAN);
 
     @Unique
-    private static final TrackedData<Float> STARVENOMORE_SYNCED_SCALE =
-            DataTracker.registerData(PassiveEntity.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final EntityDataAccessor<Float> STARVENOMORE_SYNCED_SCALE =
+            SynchedEntityData.defineId(AgeableMob.class, EntityDataSerializers.FLOAT);
 
     @Unique
     private float starvenomore$growthAccumulator = 0f;
@@ -57,16 +57,16 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
     private int starvenomore$ticksSinceBreed = 0;
 
     @Unique
-    private DataTracker starvenomore$tracker() {
-        return ((Entity)(Object) this).getDataTracker();
+    private SynchedEntityData starvenomore$tracker() {
+        return ((Entity)(Object) this).getEntityData();
     }
 
-    @Inject(method = "initDataTracker", at = @At("TAIL"))
-    private void starvenomore$initPlumpTracker(DataTracker.Builder builder, CallbackInfo ci) {
-        builder.add(STARVENOMORE_PLUMP, false);
-        builder.add(STARVENOMORE_PLAYER_LINEAGE, false);
-        builder.add(STARVENOMORE_EFFECTIVE_PLUMP_SYNCED, false);
-        builder.add(STARVENOMORE_SYNCED_SCALE, 1.25f);
+    @Inject(method = "defineSynchedData", at = @At("TAIL"))
+    private void starvenomore$initPlumpTracker(SynchedEntityData.Builder builder, CallbackInfo ci) {
+        builder.define(STARVENOMORE_PLUMP, false);
+        builder.define(STARVENOMORE_PLAYER_LINEAGE, false);
+        builder.define(STARVENOMORE_EFFECTIVE_PLUMP_SYNCED, false);
+        builder.define(STARVENOMORE_SYNCED_SCALE, 1.25f);
     }
 
     @Override
@@ -115,27 +115,27 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
         this.starvenomore$setPlump(false);
     }
 
-    @Inject(method = "tickMovement", at = @At("TAIL"))
+    @Inject(method = "aiStep", at = @At("TAIL"))
     private void starvenomore$onTickMovement(CallbackInfo ci) {
-        PassiveEntity self = (PassiveEntity)(Object) this;
-        if (self.getEntityWorld() instanceof ClientWorld) return;
+        AgeableMob self = (AgeableMob)(Object) this;
+        if (self.level() instanceof ClientLevel) return;
 
         ModConfig cfg = ModConfig.get();
 
         // HAYBALE GROWTH
         if (self.isBaby() && cfg.doOnHaybaleFasterBabyGrowth) {
-            BlockPos below = self.getBlockPos().down();
-            if (self.getEntityWorld().getBlockState(below).getBlock() == Blocks.HAY_BLOCK) {
-                if (self.getEntityWorld() instanceof ServerWorld serverWorld) {
-                    serverWorld.spawnParticles(ParticleTypes.HAPPY_VILLAGER,
+            BlockPos below = self.blockPosition().below();
+            if (self.level().getBlockState(below).getBlock() == Blocks.HAY_BLOCK) {
+                if (self.level() instanceof ServerLevel serverWorld) {
+                    serverWorld.sendParticles(ParticleTypes.HAPPY_VILLAGER,
                             self.getX(), self.getY() + 0.5, self.getZ(),
                             1, 0.3, 0.3, 0.3, 0.0);
                 }
                 starvenomore$growthAccumulator += cfg.onHaybaleFasterBabyGrowthMultiplier / 100f;
                 while (starvenomore$growthAccumulator >= 1f) {
                     starvenomore$growthAccumulator -= 1f;
-                    int age = self.getBreedingAge();
-                    if (age < 0) self.setBreedingAge(Math.min(age + 1, 0));
+                    int age = self.getAge();
+                    if (age < 0) self.setAge(Math.min(age + 1, 0));
                 }
             }
         }
@@ -157,30 +157,30 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
 
         // PLUMP TRACKING
         if (self.isBaby() || starvenomore$isPlump()) return;
-        if (!self.getType().isIn(ModTags.EntityTypes.CAN_PLUMP)) return;
+        if (!self.is(ModTags.EntityTypes.CAN_PLUMP)) return;
         if (!cfg.doPlump) return;
-        if (self instanceof GoatEntity && !cfg.doGoatsDropAndPlump) return;
+        if (self instanceof Goat && !cfg.doGoatsDropAndPlump) return;
         if (!cfg.doWildPlump && !starvenomore$isPlayerLineage()) return;
 
         starvenomore$ticksSinceBreed++;
-        int thresholdTicks = cfg.plumpDays * 24000;
+        int thresholdTicks = cfg.plumpDays * 20; //24000
         if (starvenomore$ticksSinceBreed >= thresholdTicks) {
             starvenomore$setPlump(true);
 
-            if (self.getEntityWorld() instanceof ServerWorld serverWorld) {
+            if (self.level() instanceof ServerLevel serverWorld) {
 
                 serverWorld.playSound(null, self.getX(), self.getY(), self.getZ(),
-                        SoundEvents.BLOCK_FUNGUS_BREAK, self.getSoundCategory(),
+                        SoundEvents.FUNGUS_BREAK, self.getSoundSource(),
                         5.0f, 0.5f);
 
-                serverWorld.spawnParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                serverWorld.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
                         self.getX(), self.getY() + 0.2, self.getZ(),
                         16, 0.7, 0.1, 0.7, 0);
 
 
 
-                serverWorld.spawnParticles(
-                        EffectParticleEffect.of(ParticleTypes.EFFECT, 0xFFFFFFFF, 1.0F),
+                serverWorld.sendParticles(
+                        SpellParticleOption.create(ParticleTypes.EFFECT, 0xFFFFFFFF, 1.0F),
                         self.getX(), self.getY() + 0.5, self.getZ(),
                         24, 0.4, 1.0, 0.4, 0.05);
             }
@@ -188,17 +188,17 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
         }
     }
 
-    @Inject(method = "writeCustomData", at = @At("TAIL"))
-    private void starvenomore$writePlump(WriteView view, CallbackInfo ci) {
+    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
+    private void starvenomore$writePlump(ValueOutput view, CallbackInfo ci) {
         view.putInt("StarveNoMoreTicksSinceBreed", starvenomore$ticksSinceBreed);
         view.putBoolean("StarveNoMorePlump", starvenomore$isPlump());
         view.putBoolean("StarveNoMorePlayerLineage", starvenomore$isPlayerLineage());
     }
 
-    @Inject(method = "readCustomData", at = @At("TAIL"))
-    private void starvenomore$readPlump(ReadView view, CallbackInfo ci) {
-        starvenomore$ticksSinceBreed = view.getInt("StarveNoMoreTicksSinceBreed", 0);
-        starvenomore$setPlump(view.getBoolean("StarveNoMorePlump", false));
-        starvenomore$setPlayerLineage(view.getBoolean("StarveNoMorePlayerLineage", false));
+    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+    private void starvenomore$readPlump(ValueInput view, CallbackInfo ci) {
+        starvenomore$ticksSinceBreed = view.getIntOr("StarveNoMoreTicksSinceBreed", 0);
+        starvenomore$setPlump(view.getBooleanOr("StarveNoMorePlump", false));
+        starvenomore$setPlayerLineage(view.getBooleanOr("StarveNoMorePlayerLineage", false));
     }
 }

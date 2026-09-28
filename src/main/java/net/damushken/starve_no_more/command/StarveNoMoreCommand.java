@@ -8,20 +8,20 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.damushken.starve_no_more.util.MobCapManager;
 import net.damushken.starve_no_more.util.PlumpAccess;
 import net.damushken.starve_no_more.util.PlumpUtil;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
 
 import java.util.function.*;
 
 public class StarveNoMoreCommand {
 
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher,
-                                CommandRegistryAccess registryAccess) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher,
+                                CommandBuildContext registryAccess) {
 
-        LiteralArgumentBuilder<ServerCommandSource> root = CommandManager.literal("starvenomore")
-                .requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK));
+        LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("starvenomore")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS));
 
         root.then(intGamerule("set_creature_max_capacity",
                 ModConfig.CAP_MIN, ModConfig.CAP_MAX, ModConfig.CREATURE_DEFAULT,
@@ -118,18 +118,18 @@ public class StarveNoMoreCommand {
 
     // HELPERS
 
-    private static LiteralArgumentBuilder<ServerCommandSource> intGamerule(
+    private static LiteralArgumentBuilder<CommandSourceStack> intGamerule(
             String name, int min, int max, int def,
             Function<ModConfig, Integer> getter, BiConsumer<ModConfig, Integer> setter,
             Runnable onChange) {
 
-        return CommandManager.literal(name)
+        return Commands.literal(name)
                 .executes(ctx -> {
                     ModConfig cfg = ModConfig.get();
                     infoMessage(ctx.getSource(), name, String.valueOf(getter.apply(cfg)), String.valueOf(def));
                     return 1;
                 })
-                .then(CommandManager.literal("reset")
+                .then(Commands.literal("reset")
                         .executes(ctx -> {
                             ModConfig cfg = ModConfig.get();
                             setter.accept(cfg, def);
@@ -138,7 +138,7 @@ public class StarveNoMoreCommand {
                             resetMessage(ctx.getSource(), name, String.valueOf(def));
                             return 1;
                         }))
-                .then(CommandManager.argument("value", IntegerArgumentType.integer(min, max))
+                .then(Commands.argument("value", IntegerArgumentType.integer(min, max))
                         .executes(ctx -> {
                             int value = IntegerArgumentType.getInteger(ctx, "value");
                             ModConfig cfg = ModConfig.get();
@@ -150,17 +150,17 @@ public class StarveNoMoreCommand {
                         }));
     }
 
-    private static LiteralArgumentBuilder<ServerCommandSource> floatGamerule(
+    private static LiteralArgumentBuilder<CommandSourceStack> floatGamerule(
             String name, float min, float max, float def,
             Function<ModConfig, Float> getter, BiConsumer<ModConfig, Float> setter) {
 
-        return CommandManager.literal(name)
+        return Commands.literal(name)
                 .executes(ctx -> {
                     ModConfig cfg = ModConfig.get();
                     infoMessage(ctx.getSource(), name, String.valueOf(getter.apply(cfg)), String.valueOf(def));
                     return 1;
                 })
-                .then(CommandManager.literal("reset")
+                .then(Commands.literal("reset")
                         .executes(ctx -> {
                             ModConfig cfg = ModConfig.get();
                             setter.accept(cfg, def);
@@ -168,7 +168,7 @@ public class StarveNoMoreCommand {
                             resetMessage(ctx.getSource(), name, String.valueOf(def));
                             return 1;
                         }))
-                .then(CommandManager.argument("value", FloatArgumentType.floatArg(min, max))
+                .then(Commands.argument("value", FloatArgumentType.floatArg(min, max))
                         .executes(ctx -> {
                             float value = FloatArgumentType.getFloat(ctx, "value");
                             ModConfig cfg = ModConfig.get();
@@ -179,17 +179,17 @@ public class StarveNoMoreCommand {
                         }));
     }
 
-    private static LiteralArgumentBuilder<ServerCommandSource> boolGamerule(
+    private static LiteralArgumentBuilder<CommandSourceStack> boolGamerule(
             String name, boolean def,
             Function<ModConfig, Boolean> getter, BiConsumer<ModConfig, Boolean> setter) {
 
-        return CommandManager.literal(name)
+        return Commands.literal(name)
                 .executes(ctx -> {
                     ModConfig cfg = ModConfig.get();
                     infoMessage(ctx.getSource(), name, String.valueOf(getter.apply(cfg)), String.valueOf(def));
                     return 1;
                 })
-                .then(CommandManager.literal("reset")
+                .then(Commands.literal("reset")
                         .executes(ctx -> {
                             ModConfig cfg = ModConfig.get();
                             setter.accept(cfg, def);
@@ -197,7 +197,7 @@ public class StarveNoMoreCommand {
                             resetMessage(ctx.getSource(), name, String.valueOf(def));
                             return 1;
                         }))
-                .then(CommandManager.argument("value", BoolArgumentType.bool())
+                .then(Commands.argument("value", BoolArgumentType.bool())
                         .executes(ctx -> {
                             boolean value = BoolArgumentType.getBool(ctx, "value");
                             ModConfig cfg = ModConfig.get();
@@ -208,18 +208,18 @@ public class StarveNoMoreCommand {
                         }));
     }
 
-    private static void infoMessage(ServerCommandSource source, String name, String current, String def) {
-        source.sendFeedback(() -> Text.literal(
+    private static void infoMessage(CommandSourceStack source, String name, String current, String def) {
+        source.sendSuccess(() -> Component.literal(
                 "§7[StarveNoMore] §f" + name + " = §a" + current + " §7(default: " + def + ")"), false);
     }
 
-    private static void setMessage(ServerCommandSource source, String name, String value) {
-        source.sendFeedback(() -> Text.literal(
+    private static void setMessage(CommandSourceStack source, String name, String value) {
+        source.sendSuccess(() -> Component.literal(
                 "§7[StarveNoMore] §f" + name + " set to §a" + value), true);
     }
 
-    private static void resetMessage(ServerCommandSource source, String name, String def) {
-        source.sendFeedback(() -> Text.literal(
+    private static void resetMessage(CommandSourceStack source, String name, String def) {
+        source.sendSuccess(() -> Component.literal(
                 "§7[StarveNoMore] §f" + name + " reset to default (§a" + def + "§f)"), true);
     }
 }
