@@ -163,7 +163,7 @@ public abstract class AgeableMobMixin implements PlumpAccess {
         if (!cfg.doWildPlump && !starvenomore$isPlayerLineage()) return;
 
         starvenomore$ticksSinceBreed++;
-        int thresholdTicks = cfg.plumpDays * 20; //24000
+        int thresholdTicks = cfg.plumpDays * 24000;
         if (starvenomore$ticksSinceBreed >= thresholdTicks) {
             starvenomore$setPlump(true);
 
