@@ -6,6 +6,7 @@ import net.damushken.starve_no_more.util.ModTags;
 import net.damushken.starve_no_more.util.PlumpAccess;
 import net.damushken.starve_no_more.util.PlumpUtil;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -16,6 +17,7 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.GoatEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.EffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -116,15 +118,15 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
     @Inject(method = "tickMovement", at = @At("TAIL"))
     private void starvenomore$onTickMovement(CallbackInfo ci) {
         PassiveEntity self = (PassiveEntity)(Object) this;
-        if (self.getWorld().isClient) return;
+        if (self.getEntityWorld() instanceof ClientWorld) return;
 
         ModConfig cfg = ModConfig.get();
 
         // HAYBALE GROWTH
         if (self.isBaby() && cfg.doOnHaybaleFasterBabyGrowth) {
             BlockPos below = self.getBlockPos().down();
-            if (self.getWorld().getBlockState(below).getBlock() == Blocks.HAY_BLOCK) {
-                if (self.getWorld() instanceof ServerWorld serverWorld) {
+            if (self.getEntityWorld().getBlockState(below).getBlock() == Blocks.HAY_BLOCK) {
+                if (self.getEntityWorld() instanceof ServerWorld serverWorld) {
                     serverWorld.spawnParticles(ParticleTypes.HAPPY_VILLAGER,
                             self.getX(), self.getY() + 0.5, self.getZ(),
                             1, 0.3, 0.3, 0.3, 0.0);
@@ -165,7 +167,7 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
         if (starvenomore$ticksSinceBreed >= thresholdTicks) {
             starvenomore$setPlump(true);
 
-            if (self.getWorld() instanceof ServerWorld serverWorld) {
+            if (self.getEntityWorld() instanceof ServerWorld serverWorld) {
 
                 serverWorld.playSound(null, self.getX(), self.getY(), self.getZ(),
                         SoundEvents.BLOCK_FUNGUS_BREAK, self.getSoundCategory(),
@@ -177,7 +179,8 @@ public abstract class PassiveEntityMixin implements PlumpAccess {
 
 
 
-                serverWorld.spawnParticles(ParticleTypes.EFFECT,
+                serverWorld.spawnParticles(
+                        EffectParticleEffect.of(ParticleTypes.EFFECT, 0xFFFFFFFF, 1.0F),
                         self.getX(), self.getY() + 0.5, self.getZ(),
                         24, 0.4, 1.0, 0.4, 0.05);
             }

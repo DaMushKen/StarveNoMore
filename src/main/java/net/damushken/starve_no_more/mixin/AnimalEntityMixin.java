@@ -66,7 +66,7 @@ public abstract class AnimalEntityMixin {
             }
             world.spawnEntity(extraChild);
 
-            if (extraChild.getWorld() instanceof ServerWorld serverWorld) {
+            if (extraChild.getEntityWorld() instanceof ServerWorld serverWorld) {
 
                 serverWorld.spawnParticles(ModParticles.GOLDEN_HEART_PARTICLE,
                         extraChild.getX(), extraChild.getY() + 1.5, extraChild.getZ(),

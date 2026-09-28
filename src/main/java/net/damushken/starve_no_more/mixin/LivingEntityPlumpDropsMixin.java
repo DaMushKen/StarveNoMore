@@ -26,7 +26,7 @@ public abstract class LivingEntityPlumpDropsMixin {
         if (!PlumpUtil.isEffectivelyPlump(passive)) return;
 
         ModConfig cfg = ModConfig.get();
-        if (!(self.getWorld() instanceof ServerWorld serverWorld)) return;
+        if (!(self.getEntityWorld() instanceof ServerWorld serverWorld)) return;
 
         Box box = self.getBoundingBox().expand(1.5);
         for (ItemEntity itemEntity : serverWorld.getEntitiesByClass(ItemEntity.class, box, e -> e.age <= 1)) {

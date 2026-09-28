@@ -1,14 +1,17 @@
 package net.damushken.starve_no_more.particle;
 
 import net.minecraft.client.particle.*;
+import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
+import org.jetbrains.annotations.Nullable;
 
-public class GoldenHeartParticle extends SpriteBillboardParticle {
-    public GoldenHeartParticle(ClientWorld world, double xCoord, double yCoord, double zCoord,
-                               SpriteProvider spriteSet, double xd, double yd, double zd) {
-        super(world, xCoord, yCoord, zCoord, xd, yd, zd);
+public class GoldenHeartParticle extends BillboardParticle {
+
+    public GoldenHeartParticle(ClientWorld world, double x, double y, double z, Sprite sprite) {
+        super(world, x, y, z, sprite);
 
         this.ascending = true;
 
@@ -21,7 +24,6 @@ public class GoldenHeartParticle extends SpriteBillboardParticle {
 
         this.scale *= 1.5f;
         this.maxAge = 25;
-        this.setSpriteForAge(spriteSet);
 
         this.collidesWithWorld = false;
 
@@ -31,13 +33,12 @@ public class GoldenHeartParticle extends SpriteBillboardParticle {
     }
 
     @Override
-    public ParticleTextureSheet getType() {
-        return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
+    protected RenderType getRenderType() {
+        return RenderType.PARTICLE_ATLAS_OPAQUE;
     }
 
-    @Override
-    public float getSize(float tickDelta) {
-        return this.scale * MathHelper.clamp((this.age + tickDelta) / this.maxAge * 32.0F, 0.0F, 1.0F);
+    public float getSize(float tickProgress) {
+        return this.scale * MathHelper.clamp(((float)this.age + tickProgress) / (float)this.maxAge * 32.0F, 0.0F, 1.0F);
     }
 
     public static class Factory implements ParticleFactory<SimpleParticleType> {
@@ -47,9 +48,10 @@ public class GoldenHeartParticle extends SpriteBillboardParticle {
             this.sprites = spriteProvider;
         }
 
-        public Particle createParticle(SimpleParticleType particleType, ClientWorld clientWorld,
-                                       double x, double y, double z, double xd, double yd, double zd) {
-            return new GoldenHeartParticle(clientWorld, x, y, z, this.sprites, xd, yd, zd);
+        @Override
+        public @Nullable Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Random random) {
+            GoldenHeartParticle particle = new GoldenHeartParticle(world, x, y, z, this.sprites.getSprite(random));
+            return particle;
         }
     }
 }

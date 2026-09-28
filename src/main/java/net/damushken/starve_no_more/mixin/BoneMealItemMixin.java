@@ -6,6 +6,7 @@ import net.damushken.starve_no_more.datagen.ModEntityTypeTagProvider;
 import net.damushken.starve_no_more.util.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -44,7 +45,7 @@ public class BoneMealItemMixin {
         if (!cir.getReturnValue().isAccepted()) return;
 
         World world = context.getWorld();
-        if (world.isClient) return;
+        if (world instanceof ClientWorld) return;
 
         BlockPos pos = context.getBlockPos();
         if (world.getBlockState(pos).getBlock() != Blocks.GRASS_BLOCK) return;
@@ -74,7 +75,7 @@ public class BoneMealItemMixin {
         passiveEntity.setBreedingAge(-24000);
         world.spawnEntity(passiveEntity);
 
-        if (passiveEntity.getWorld() instanceof  ServerWorld serverWorld) {
+        if (passiveEntity.getEntityWorld() instanceof  ServerWorld serverWorld) {
 
             serverWorld.spawnParticles(ParticleTypes.ENCHANT,
                     passiveEntity.getX(), passiveEntity.getY() + 0.5, passiveEntity.getZ(),

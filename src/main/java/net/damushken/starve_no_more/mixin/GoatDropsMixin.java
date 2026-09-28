@@ -21,7 +21,7 @@ public abstract class GoatDropsMixin {
     private void starvenomore$goatExtraDrops(ServerWorld world, DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
         LivingEntity self = (LivingEntity)(Object) this;
         if (!(self instanceof GoatEntity goat)) return;
-        if (!(self.getWorld() instanceof ServerWorld serverWorld)) return;
+        if (!(self.getEntityWorld() instanceof ServerWorld serverWorld)) return;
         if (!ModConfig.get().doGoatsDropAndPlump) return;
 
         var random = self.getRandom();
