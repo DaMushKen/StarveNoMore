@@ -21,7 +21,7 @@ public class StarveNoMoreCommand {
                                 CommandRegistryAccess registryAccess) {
 
         LiteralArgumentBuilder<ServerCommandSource> root = CommandManager.literal("starvenomore")
-                .requires(source -> source.hasPermissionLevel(2));
+                .requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK));
 
         root.then(intGamerule("set_creature_max_capacity",
                 ModConfig.CAP_MIN, ModConfig.CAP_MAX, ModConfig.CREATURE_DEFAULT,
